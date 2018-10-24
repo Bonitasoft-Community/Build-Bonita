@@ -204,8 +204,6 @@ build_maven_install_maven_test_skip bonita-userfilters
 # Each connectors implementation version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml.
 # For the version of bonita-connectors refers to one of the included connector and use the parent project version (parent project should be bonita-connectors).
 # You need to find connector git repository tag that provides a given connector implementation version.
-build_maven_install_maven_test_skip bonita-connectors 1.0.0
-
 build_maven_install_maven_test_skip bonita-connector-alfresco 2.0.1
 
 build_maven_install_maven_test_skip bonita-connector-cmis 3.0.1
