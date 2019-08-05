@@ -1,0 +1,13 @@
+language: java
+jdk: openjdk8
+os: linux
+dist: xenial
+
+cache:
+  directories:
+    - $HOME/.m2
+before_cache:
+  # ensure that we do not keep bonitasoft artifacts accross builds
+  - rm -f $HOME/.m2/repository/org/bonitasoft
+
+script: ./build-script.sh
