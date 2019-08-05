@@ -10,4 +10,8 @@ before_cache:
   # ensure that we do not keep bonitasoft artifacts accross builds
   - rm -f $HOME/.m2/repository/org/bonitasoft
 
+branches:
+  only:
+  - master
+
 script: ./build-script.sh
