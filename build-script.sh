@@ -279,7 +279,7 @@ build_maven_install_maven_test_skip bonita-connector-cmis 3.0.3
 
 build_maven_install_maven_test_skip bonita-connector-database 2.0.0
 
-build_maven_install_maven_test_skip bonita-connector-email bonita-connector-email-impl-1.1.0
+build_maven_install_maven_test_skip bonita-connector-email 1.1.0
 
 build_maven_install_maven_test_skip bonita-connector-googlecalendar-V3 bonita-connector-google-calendar-v3-1.0.0
 
