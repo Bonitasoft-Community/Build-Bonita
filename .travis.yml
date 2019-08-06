@@ -5,10 +5,12 @@ dist: xenial
 
 cache:
   directories:
+    # Maven dependencies and wrappers
     - $HOME/.m2
+    # TODO add gradle cache
 before_cache:
   # ensure that we do not keep bonitasoft artifacts accross builds
-  - rm -f $HOME/.m2/repository/org/bonitasoft
+  - rm -rf $HOME/.m2/repository/org/bonitasoft
 
 branches:
   only:
