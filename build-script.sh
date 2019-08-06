@@ -277,7 +277,8 @@ build_maven_install_maven_test_skip bonita-connector-alfresco 2.0.1
 
 build_maven_install_maven_test_skip bonita-connector-cmis 3.0.3
 
-build_maven_install_maven_test_skip bonita-connector-database 2.0.0
+# TODO fail because depends on oracle jdbc driver not available in public repositories
+#build_maven_install_maven_test_skip bonita-connector-database 2.0.0
 
 build_maven_install_maven_test_skip bonita-connector-email 1.1.0
 
@@ -289,11 +290,15 @@ build_maven_install_maven_test_skip bonita-connector-rest 1.0.5
 
 build_maven_install_maven_test_skip bonita-connector-salesforce 1.1.2
 
-build_maven_install_maven_test_skip bonita-connector-scripting bonita-connector-scripting 1.1.0
+build_maven_install_maven_test_skip bonita-connector-scripting 1.1.0
 
 build_maven_install_maven_test_skip bonita-connector-twitter 1.2.0
 
-build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
+# TODO fail because depends on a snapshot version of bonita-engine for dependencyManagement
+# [ERROR] The build could not read 1 project -> [Help 1]
+# org.apache.maven.project.ProjectBuildingException: Some problems were encountered while processing the POMs:
+# [ERROR] 'dependencies.dependency.version' for com.sun.xml.bind:jaxb-impl:jar is missing. @ line 159, column 21
+#build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
 
 # Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
 build_maven_install_maven_test_skip bonita-studio-watchdog studio-watchdog-${STUDIO_WATCHDOG_VERSION}
