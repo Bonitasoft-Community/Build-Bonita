@@ -39,11 +39,9 @@ detectDependenciesVersions() {
   local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_BPM_VERSION}/pom.xml`
 
   UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
-  THEME_BUILDER_VERSION=`echo "${studioPom}" | grep theme.builder.version | sed 's@.*>\(.*\)<.*@\1@g'`
   STUDIO_WATCHDOG_VERSION=`echo "${studioPom}" | grep watchdog.version | sed 's@.*>\(.*\)<.*@\1@g'`
 
   echo "UID_VERSION: ${UID_VERSION}"
-  echo "THEME_BUILDER_VERSION: ${THEME_BUILDER_VERSION}"
   echo "STUDIO_WATCHDOG_VERSION: ${STUDIO_WATCHDOG_VERSION}"
 }
 
@@ -293,9 +291,6 @@ build_maven_install_maven_test_skip bonita-connector-scripting bonita-connector-
 build_maven_install_maven_test_skip bonita-connector-twitter 1.2.0
 
 build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
-
-# Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
-build_maven_install_maven_test_skip bonita-theme-builder ${THEME_BUILDER_VERSION}
 
 # Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
 build_maven_install_maven_test_skip bonita-studio-watchdog studio-watchdog-${STUDIO_WATCHDOG_VERSION}
