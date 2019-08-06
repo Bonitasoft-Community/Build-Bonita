@@ -165,7 +165,9 @@ publishToMavenLocal() {
 }
 
 clean() {
-  build_command="$build_command clean"
+  # TODO make this configurable
+  #build_command="$build_command clean"
+  echo "skip clean"
 }
 
 install() {
@@ -183,6 +185,10 @@ maven_test_skip() {
 # FIXME: should not be used
 skiptest() {
   build_command="$build_command -DskipTests"
+}
+
+gradle_test_skip() {
+  build_command="$build_command -x test"
 }
 
 profile() {
@@ -235,16 +241,13 @@ build_maven_wrapper_verify_maven_test_skip_with_profile()
 
 # params:
 # - Git repository name
-# - Target directory name
-# - Profile name
-build_maven_wrapper_install_maven_test_skip_with_target_directory_with_profile()
+build_maven_wrapper_install_maven_test_skip()
 {
-  checkout $1 $BONITA_BPM_VERSION $2
+  checkout "$@"
   build_maven_wrapper
   clean
   install  
   maven_test_skip
-  profile $3
   run_maven_with_standard_system_properties
 }
 
@@ -252,6 +255,7 @@ build_gradle_build() {
   checkout "$@"
   build_gradle_wrapper
   clean
+  gradle_test_skip
   publishToMavenLocal
   run_gradle_with_standard_system_properties
 }
@@ -260,10 +264,9 @@ build_gradle_build() {
 detectDependenciesVersions
 
 
-# Note: Checkout folder of bonita-engine project need to be named community.
-build_maven_wrapper_install_maven_test_skip_with_target_directory_with_profile bonita-engine community tests,javadoc
+build_gradle_build bonita-engine
 
-build_maven_install_maven_test_skip bonita-userfilters
+build_maven_wrapper_install_maven_test_skip bonita-userfilters
 
 # Each connectors implementation version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml.
 # For the version of bonita-connectors refers to one of the included connector and use the parent project version (parent project should be bonita-connectors).
