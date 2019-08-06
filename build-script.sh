@@ -53,36 +53,24 @@ detectDependenciesVersions() {
 }
 
 
-# List of repositories on https://github.com/bonitasoft that you don't need to build:
+# List of repositories on https://github.com/bonitasoft that you don't need to build
+# Note that archived repositories are not listed here, as they are only required to build old Bonita versions
 #
 # angular-strap: automatically downloaded in the build of bonita-web project.
 # babel-preset-bonita: automatically downloaded in the build of bonita-ui-designer project.
-# bonita-branding: used to be required by Bonita Studio. Deprecated.
 # bonita-codesign-windows: use to sign Windows binaries when building using Bonita Continuous Integration.
-# bonita-connector-drools: Drools connector is not included in an official release.
-# bonita-connector-googlecalendar: deprecated replaced by bonita-connector-googlecalendar-V3.
-# bonita-connector-mongodb: not released.
-# bonita-connector-sugarcrm: deprecated.
 # bonita-connector-talend: deprecated.
-# bonita-connectors-assembly: previous solution to build connectors in Bonita Studio 6. Deprecated.
-# bonita-connectors-packaging: previous solution to build connectors in Bonita Studio 6. Deprecated.
 # bonita-continuous-delivery-doc: Bonita Enterprise Edition Continuous Delivery module documentation.
 # bonita-custom-page-seed: a project to start building a custom page. Deprecated in favor of UI Designer page + REST API extension.
 # bonita-doc: Bonita documentation.
 # bonita-developer-resources: guidelines for contributing to Bonita, contributor license agreement, code style...
 # bonita-examples: Bonita usage code examples.
-# bonita-gwt-tools: deprecated.
 # bonita-ici-doc: Bonita Enterprise Edition AI module documentation.
-# bonita-jboss-h2-mbean: JBoss has been replaced by WildFly.
 # bonita-js-components: automatically downloaded in the build of projects that require it.
 # bonita-migration: migration tool to update a server from a previous Bonita release.
-# bonita-migration-plugins: archive repository, code now in bonita-migration repository.
 # bonita-page-authorization-rules: documentation project to provide an example for page mapping authorization rule.
 # bonita-platform: deprecated, now part of bonita-engine repository.
 # bonita-connector-sap: deprecated. Use REST connector instead.
-# bonita-simulation: deprecated.
-# bonita-tomcat-h2-listener: h2 is now launched in an independent JVM.
-# bonita-tomcat-valve: deprecated, was useful for JBoss bundle embedded Tomcat.
 # bonita-vacation-management-example: an example for Bonita Enterprise Edition Continuous Delivery module.
 # bonita-web-devtools: Bonitasoft internal development tools.
 # bonita-widget-contrib: project to start building custom widgets outside UI Designer.
@@ -95,8 +83,6 @@ detectDependenciesVersions() {
 # restlet-framework-java: /!\
 # sandbox: a sandbox for developers /!\ (private ?)
 # swt-repo: legacy repository required by Bonita Studio. Deprecated.
-# tomcat-atomikos: experimentation with a different transaction manager on Tomcat. Not part of an official release.
-# tomcat-narayana: experimentation with a different transaction manager on Tomcat. Not part of an official release.
 # training-presentation-tool: fork of reveal.js with custom look and feel.
 # widget-builder: automatically downloaded in the build of bonita-ui-designer project.
 
