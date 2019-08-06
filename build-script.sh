@@ -110,7 +110,10 @@ checkout() {
   else
     branch_name=$BONITA_BPM_VERSION
   fi
-    
+  echo "============================================================"
+  echo "Processing ${repository_name} ${branch_name}"
+  echo "============================================================"
+
   if [ "$#" -eq 3 ]; then
     checkout_folder_name="$3"
   else
@@ -167,6 +170,11 @@ build_gradle_wrapper() {
   build_command="./gradlew"
 }
 
+# TODO make this configurable
+build_quiet_if_requested() {
+  build_command="$build_command --quiet"
+}
+
 build() {
   build_command="$build_command build"
 }
@@ -212,6 +220,7 @@ profile() {
 build_maven_install_maven_test_skip() {
   checkout "$@"
   build_maven
+  build_quiet_if_requested
   clean
   install
   maven_test_skip
@@ -225,6 +234,7 @@ build_maven_install_maven_test_skip() {
 build_maven_install_skiptest() {
   checkout "$@"
   build_maven
+  build_quiet_if_requested
   clean
   install
   skiptest
@@ -238,6 +248,7 @@ build_maven_wrapper_verify_maven_test_skip_with_profile()
 {
   checkout $1
   build_maven_wrapper
+  build_quiet_if_requested
   clean
   verify
   maven_test_skip
@@ -256,6 +267,7 @@ build_maven_wrapper_install_maven_test_skip()
 {
   checkout "$@"
   build_maven_wrapper
+  build_quiet_if_requested
   clean
   install  
   maven_test_skip
@@ -265,6 +277,7 @@ build_maven_wrapper_install_maven_test_skip()
 build_gradle_build() {
   checkout "$@"
   build_gradle_wrapper
+  build_quiet_if_requested
   clean
   gradle_test_skip
   publishToMavenLocal
