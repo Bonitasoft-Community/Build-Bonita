@@ -128,6 +128,17 @@ checkout() {
   
   # Move to the repository clone folder (required to run Maven wrapper)
   cd $checkout_folder_name
+
+  # Workarounds
+  if [[ "$repository_name" == "bonita-connector-email" ]]; then
+    echo "WARN: workaround on $repository_name to fix dependency on bonita-engine SNAPSHOT version"
+    sed -i 's,<version>7.9.0-SNAPSHOT</version>,<version>${bonita.engine.version}</version>,g' pom.xml
+  fi
+  if [[ "$repository_name" == "bonita-connector-webservice" ]]; then
+    echo "WARN: workaround on $repository_name to fix dependency on bonita-engine SNAPSHOT version and missing versions for some dependencies"
+    cp ./../workarounds/bonita-connector-webservices_pom.xml ./pom.xml
+  fi
+
 }
 
 run_maven_with_standard_system_properties() {
@@ -280,13 +291,7 @@ build_maven_install_maven_test_skip bonita-connector-cmis 3.0.3
 # TODO fail because depends on oracle jdbc driver not available in public repositories
 #build_maven_install_maven_test_skip bonita-connector-database 2.0.0
 
-# TODO fail because depends on a snapshot version of bonita-engine for dependencyManagement
-# [ERROR] [ERROR] Some problems were encountered while processing the POMs:
-# [ERROR] Non-resolvable import POM: Could not find artifact org.bonitasoft.engine:bonita-engine:pom:7.9.0-SNAPSHOT in sonatype-snapshots (https://oss.sonatype.org/content/repositories/snapshots/) @ line 22, column 25
-# [ERROR] 'dependencies.dependency.version' for org.assertj:assertj-core:jar is missing. @ line 56, column 21
-# [ERROR] 'dependencies.dependency.version' for commons-io:commons-io:jar is missing. @ line 61, column 21
-# [ERROR] 'dependencies.dependency.version' for org.slf4j:slf4j-simple:jar is missing. @ line 72, column 21
-# build_maven_install_maven_test_skip bonita-connector-email 1.1.0
+build_maven_install_maven_test_skip bonita-connector-email 1.1.0
 
 build_maven_install_maven_test_skip bonita-connector-googlecalendar-V3 bonita-connector-google-calendar-v3-1.0.0
 
@@ -300,11 +305,7 @@ build_maven_install_maven_test_skip bonita-connector-scripting 1.1.0
 
 build_maven_install_maven_test_skip bonita-connector-twitter 1.2.0
 
-# TODO fail because depends on a snapshot version of bonita-engine for dependencyManagement
-# [ERROR] The build could not read 1 project -> [Help 1]
-# org.apache.maven.project.ProjectBuildingException: Some problems were encountered while processing the POMs:
-# [ERROR] 'dependencies.dependency.version' for com.sun.xml.bind:jaxb-impl:jar is missing. @ line 159, column 21
-#build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
+build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
 
 # Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
 build_maven_install_maven_test_skip bonita-studio-watchdog studio-watchdog-${STUDIO_WATCHDOG_VERSION}
