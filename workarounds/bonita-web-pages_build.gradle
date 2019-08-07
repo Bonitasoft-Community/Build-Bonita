@@ -1,0 +1,57 @@
+plugins {
+    id 'com.bonitasoft.gradle.bonita-release' version '0.1.43'
+//    id 'com.bonitasoft.deployer.bonita-resources-deployer' version '0.1.25'
+}
+
+apply plugin: 'com.bonitasoft.gradle.bonita-uid'
+UIDesigner {
+  version "1.9.53"
+}
+
+bonitaRelease {
+    // do not create a commit after the release (need to modify release.groovy to remove that)
+   createCommitAfter = false
+}
+
+allprojects {
+    apply plugin: 'distribution'
+    apply plugin: 'maven-publish'
+
+    group 'org.bonitasoft.web.pages'
+
+    repositories {
+        mavenLocal()
+        maven { url 'http://repositories.rd.lan/maven/all/' }
+        mavenCentral()
+        jcenter()
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name 'bonitaInternal'
+                if (project.version.endsWith('-SNAPSHOT')) {
+                    url 'http://repositories.rd.lan/maven/snapshots/'
+                } else {
+                    url 'http://repositories.rd.lan/maven/releases/'
+                }
+            }
+        }
+    }
+}
+
+configure(subprojects.findAll { it.name.contains('page-process-list') || it.name.contains('page-user-list') }) {
+    apply plugin: BonitaPagePlugin
+
+    bonitaPage {
+        nodeVersion = '8.9.4'
+        npmVersion = '6.2.0'
+        frontendBuildDir = 'dist'
+    }
+
+    publishing {
+        publications {
+            distributionZip(MavenPublication) { artifact distZip }
+        }
+    }
+}

@@ -141,7 +141,10 @@ checkout() {
     echo "WARN: workaround on $repository_name to fix dependency on bonita-engine SNAPSHOT version and missing versions for some dependencies"
     cp ./../workarounds/bonita-connector-webservices_pom.xml ./pom.xml
   fi
-
+  if [[ "$repository_name" == "bonita-web-pages" ]]; then
+    echo "WARN: workaround on $repository_name - remove bonitasoft internal gradle plugin"
+    cp ./../workarounds/bonita-web-pages_build.gradle ./build.gradle
+  fi
 }
 
 run_maven_with_standard_system_properties() {
@@ -328,16 +331,7 @@ build_maven_install_maven_test_skip bonita-studio-watchdog studio-watchdog-${STU
 # FIXME: this will be removed in future release as the same version as the one package in the release will be used.
 build_maven_install_skiptest bonita-ui-designer 1.9.53
 
-# TODO fail because of dependency on bonitasoft private artifacts
-#* What went wrong:
-#Plugin [id: 'com.bonitasoft.deployer.bonita-resources-deployer', version: '0.1.25'] was not found in any of the following sources:
-#- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
-#- Plugin Repositories (could not resolve plugin artifact 'com.bonitasoft.deployer.bonita-resources-deployer:com.bonitasoft.deployer.bonita-resources-deployer.gradle.plugin:0.1.25')
-#  Searched in the following repositories:
-#    MavenLocal(file:/home/travis/.m2/repository/)
-#    maven(http://repositories.rd.lan/maven/all/)
-#    Gradle Central Plugin Repository
-#build_gradle_build bonita-web-pages
+build_gradle_build bonita-web-pages
 
 # This is the version of the UI Designer embedded in Bonita release
 # Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
