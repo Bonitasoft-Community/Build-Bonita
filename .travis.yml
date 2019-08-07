@@ -3,14 +3,19 @@ jdk: openjdk8
 os: linux
 dist: xenial
 
+before_cache:
+  # Maven: ensure that we do not keep bonitasoft artifacts accross builds
+  - rm -rf $HOME/.m2/repository/org/bonitasoft
+  # Gradle
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
     # Maven dependencies and wrappers
     - $HOME/.m2
-    # TODO add gradle cache
-before_cache:
-  # ensure that we do not keep bonitasoft artifacts accross builds
-  - rm -rf $HOME/.m2/repository/org/bonitasoft
+    # Gradle caches and wrapper
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 branches:
   only:
