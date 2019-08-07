@@ -3,6 +3,11 @@
 set -u
 set -e
 
+# Script configuration
+# you can set the following environment variables
+# SCRIPT_BUILD_NO_CLEAN=true
+# SCRIPT_BUILD_QUIET=true
+
 # Bonita version
 BONITA_BPM_VERSION=7.9.2
 STUDIO_P2_URL=http://update-site.bonitasoft.com/p2/4.10
@@ -184,9 +189,11 @@ build_gradle_wrapper() {
   build_command="./gradlew"
 }
 
-# TODO make this configurable
 build_quiet_if_requested() {
-  build_command="$build_command --quiet"
+  if [[ "${SCRIPT_BUILD_QUIET}" == "true" ]]; then
+    echo "Configure quiet build"
+    build_command="$build_command --quiet"
+  fi
 }
 
 build() {
@@ -198,9 +205,11 @@ publishToMavenLocal() {
 }
 
 clean() {
-  # TODO make this configurable
-  #build_command="$build_command clean"
-  echo "skip clean"
+  if [[ "${SCRIPT_BUILD_NO_CLEAN}" == "true" ]]; then
+    echo "Configure build to skip clean"
+  else
+    build_command="$build_command clean"
+  fi
 }
 
 install() {

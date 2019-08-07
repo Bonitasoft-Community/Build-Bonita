@@ -21,4 +21,8 @@ branches:
   only:
   - master
 
+env:
+  global:
+    - SCRIPT_BUILD_QUIET=true
+
 script: ./build-script.sh
