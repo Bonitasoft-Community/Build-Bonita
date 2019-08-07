@@ -133,6 +133,10 @@ checkout() {
   cd $checkout_folder_name
 
   # Workarounds
+  if [[ "$repository_name" == "bonita-connector-database" ]]; then
+    echo "WARN: workaround on $repository_name to remove oracle jdbc dependency not available on public repositories"
+    cp ./../workarounds/bonita-connector-database_pom.xml ./pom.xml
+  fi
   if [[ "$repository_name" == "bonita-connector-email" ]]; then
     echo "WARN: workaround on $repository_name to fix dependency on bonita-engine SNAPSHOT version"
     sed -i 's,<version>7.9.0-SNAPSHOT</version>,<version>${bonita.engine.version}</version>,g' pom.xml
@@ -304,8 +308,7 @@ build_maven_install_maven_test_skip bonita-connector-alfresco 2.0.1
 
 build_maven_install_maven_test_skip bonita-connector-cmis 3.0.3
 
-# TODO fail because depends on oracle jdbc driver not available in public repositories
-#build_maven_install_maven_test_skip bonita-connector-database 2.0.0
+build_maven_install_maven_test_skip bonita-connector-database 2.0.0
 
 build_maven_install_maven_test_skip bonita-connector-email 1.1.0
 
