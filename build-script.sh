@@ -151,6 +151,12 @@ checkout() {
     echo "WARN: workaround on $repository_name - remove bonitasoft internal gradle plugin"
     cp ./../workarounds/bonita-web-pages_build.gradle ./build.gradle
   fi
+  if [[ "$repository_name" == "bonita-studio" ]]; then
+    echo "WARN: workaround on $repository_name - fix platform.target url"
+    # FIXME: remove temporary workaround added to make sure that we use public repository
+    # Issue is related to Tycho target-platform-configuration plugin that rely on the artifact org.bonitasoft.studio:platform that is not built
+    sed -i 's,${STUDIO_P2_URL_INTERNAL_TO_REPLACE},${STUDIO_P2_URL},g' platform/platform.target
+  fi
 }
 
 run_maven_with_standard_system_properties() {
@@ -261,11 +267,6 @@ build_maven_wrapper_verify_maven_test_skip_with_profile()
   verify
   maven_test_skip
   profile $2
-  
-  # FIXME: remove temporary workaround added to make sure that we use public repository
-  # Issue is related to Tycho target-platform-configuration plugin that rely on the artifact org.bonitasoft.studio:platform that is not built
-	sed -i 's,${STUDIO_P2_URL_INTERNAL_TO_REPLACE},${STUDIO_P2_URL},g' platform/platform.target
-  
   run_maven_with_standard_system_properties
 }
 
