@@ -42,7 +42,7 @@ fi
 
 # Detect version of depencies required to build Bonita components in Maven pom.xml files
 detectDependenciesVersions() {
-  echo "Detecting dependencies versions"
+  echo "Detecting Studio dependencies versions"
   local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_BPM_VERSION}/pom.xml`
 
   UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
@@ -52,6 +52,22 @@ detectDependenciesVersions() {
   echo "STUDIO_WATCHDOG_VERSION: ${STUDIO_WATCHDOG_VERSION}"
 }
 
+
+detectConnectorsVersions() {
+  echo "Detecting Connectors versions"
+  local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml`
+#  echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n"
+#  local linearizedStudioPom=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | echo`
+#  echo "linearized ${linearizedStudioPom}"
+
+  CONNECTOR_REST_VERSION=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-rest</artifactId> <version>\(.*\)</version>.*@\1@g'`
+  echo "CONNECTOR_REST_VERSION: ${CONNECTOR_REST_VERSION}"
+
+#<artifactId>bonita-connector-rest</artifactId> <version>1.0.6</version>
+
+#<artifactId>bonita-connector-email</artifactId> <version>1.1.0</version>
+#<artifactId>bonita-connector-database</artifactId> <version>2.0.0</version>
+}
 
 # List of repositories on https://github.com/bonitasoft that you don't need to build
 # Note that archived repositories are not listed here, as they are only required to build old Bonita versions
