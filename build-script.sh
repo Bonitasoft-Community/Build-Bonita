@@ -5,6 +5,8 @@ set -e
 
 # Bonita version
 BONITA_BPM_VERSION=7.9.2
+STUDIO_P2_URL=http://update-site.bonitasoft.com/p2/4.10
+STUDIO_P2_URL_INTERNAL_TO_REPLACE=http://repositories.rd.lan/p2/4.10.1
 
 # Test that x server is running. Required to generate Bonita Studio models
 # Can be ignored if Studio is build without the "generate" Maven profile
@@ -152,14 +154,13 @@ checkout() {
 }
 
 run_maven_with_standard_system_properties() {
-  build_command="$build_command -Dbonita.engine.version=$BONITA_BPM_VERSION -Dp2MirrorUrl=http://update-site.bonitasoft.com/p2/7.7"
+  build_command="$build_command -Dbonita.engine.version=$BONITA_BPM_VERSION -Dp2MirrorUrl=${STUDIO_P2_URL}/"
   eval "$build_command"
   # Go back to script folder (checkout move current dirrectory to project checkout folder.
   cd ..
 }
 
 run_gradle_with_standard_system_properties() {
-  build_command="$build_command -Dbonita.engine.version=$BONITA_BPM_VERSION -Dp2MirrorUrl=http://update-site.bonitasoft.com/p2/7.7"
   eval "$build_command"
   # Go back to script folder (checkout move current dirrectory to project checkout folder.
   cd ..
@@ -263,7 +264,7 @@ build_maven_wrapper_verify_maven_test_skip_with_profile()
   
   # FIXME: remove temporary workaround added to make sure that we use public repository
   # Issue is related to Tycho target-platform-configuration plugin that rely on the artifact org.bonitasoft.studio:platform that is not built
-	sed -i 's,http://repositories.rd.lan/p2/7.7,http://update-site.bonitasoft.com/p2/7.7,g' platform/platform.target
+	sed -i 's,${STUDIO_P2_URL_INTERNAL_TO_REPLACE},${STUDIO_P2_URL},g' platform/platform.target
   
   run_maven_with_standard_system_properties
 }
