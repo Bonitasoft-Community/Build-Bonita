@@ -38,11 +38,13 @@ detectDependenciesVersions() {
   local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_BPM_VERSION}/pom.xml`
 
   UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
-  THEME_BUILDER_VERSION=`echo "${studioPom}" | grep theme.builder.version | sed 's@.*>\(.*\)<.*@\1@g'`
+  # FIXME: theme builder version is no longer in bonita-studio pom.xml
+  #THEME_BUILDER_VERSION=`echo "${studioPom}" | grep theme.builder.version | sed 's@.*>\(.*\)<.*@\1@g'`
   STUDIO_WATCHDOG_VERSION=`echo "${studioPom}" | grep watchdog.version | sed 's@.*>\(.*\)<.*@\1@g'`
 
   echo "UID_VERSION: ${UID_VERSION}"
-  echo "THEME_BUILDER_VERSION: ${THEME_BUILDER_VERSION}"
+  # FIXME: to remove?
+  #echo "THEME_BUILDER_VERSION: ${THEME_BUILDER_VERSION}"
   echo "STUDIO_WATCHDOG_VERSION: ${STUDIO_WATCHDOG_VERSION}"
 }
 
@@ -234,21 +236,6 @@ build_maven_wrapper_verify_maven_test_skip_with_profile()
   run_maven_with_standard_system_properties
 }
 
-# params:
-# - Git repository name
-# - Target directory name
-# - Profile name
-build_maven_wrapper_install_maven_test_skip_with_target_directory_with_profile()
-{
-  checkout $1 $BONITA_BPM_VERSION $2
-  build_maven_wrapper
-  clean
-  install  
-  maven_test_skip
-  profile $3
-  run_maven_with_standard_system_properties
-}
-
 build_gradle_build() {
   checkout "$@"
   build_gradle_wrapper
@@ -262,7 +249,7 @@ detectDependenciesVersions
 
 
 # Note: Checkout folder of bonita-engine project need to be named community.
-build_maven_wrapper_install_maven_test_skip_with_target_directory_with_profile bonita-engine community tests,javadoc
+build_gradle_build bonita-engine
 
 build_maven_install_maven_test_skip bonita-userfilters
 
@@ -277,7 +264,7 @@ build_maven_install_maven_test_skip bonita-connector-cmis 3.0.3
 
 build_maven_install_maven_test_skip bonita-connector-database 2.0.0
 
-build_maven_install_maven_test_skip bonita-connector-email bonita-connector-email-impl-1.1.0
+build_maven_install_maven_test_skip bonita-connector-email 1.2.0
 
 build_maven_install_maven_test_skip bonita-connector-googlecalendar-V3 bonita-connector-google-calendar-v3-1.0.0
 
@@ -287,14 +274,15 @@ build_maven_install_maven_test_skip bonita-connector-rest 1.0.5
 
 build_maven_install_maven_test_skip bonita-connector-salesforce 1.1.2
 
-build_maven_install_maven_test_skip bonita-connector-scripting bonita-connector-scripting 1.1.0
+build_maven_install_maven_test_skip bonita-connector-scripting 1.1.0
 
 build_maven_install_maven_test_skip bonita-connector-twitter 1.2.0
 
 build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
 
+# FIXME: 
 # Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
-build_maven_install_maven_test_skip bonita-theme-builder ${THEME_BUILDER_VERSION}
+#build_maven_install_maven_test_skip bonita-theme-builder ${THEME_BUILDER_VERSION}
 
 # Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
 build_maven_install_maven_test_skip bonita-studio-watchdog studio-watchdog-${STUDIO_WATCHDOG_VERSION}
