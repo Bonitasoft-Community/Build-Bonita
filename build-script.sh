@@ -40,37 +40,6 @@ else
 fi
 
 
-
-
-
-
-# TODO store linearized pom in a variable
-# TODO do not depend on subsequent comment about connector name to detect version (too fragile)
-detectConnectorsVersions() {
-  echo "Detecting Connectors versions"
-  local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml`
-#  echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n"
-#  local linearizedStudioPom=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | echo`
-#  echo "linearized ${linearizedStudioPom}"
-
-  CONNECTOR_VERSION_ALFRESCO=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-alfresco</artifactId> <version>\(.*\)</version>.*<!--CMIS CONNECTORS.*@\1@g'`
-  echo "CONNECTOR_VERSION_ALFRESCO: ${CONNECTOR_VERSION_ALFRESCO}"
-
-  CONNECTOR_VERSION_CMIS=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-cmis</artifactId> <version>\(.*\)</version>.*<!--DATABASE CONNECTORS.*@\1@g'`
-  echo "CONNECTOR_VERSION_CMIS: ${CONNECTOR_VERSION_CMIS}"
-
-  CONNECTOR_VERSION_DATABASE=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-database</artifactId> <version>\(.*\)</version>.*<!--EMAIL CONNECTOR..*@\1@g'`
-  echo "CONNECTOR_VERSION_DATABASE: ${CONNECTOR_VERSION_DATABASE}"
-
-  CONNECTOR_VERSION_EMAIL=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-email</artifactId> <version>\(.*\)</version>.*<!--GOOGLE CALENDAR CONNECTOR.*@\1@g'`
-  echo "CONNECTOR_VERSION_EMAIL: ${CONNECTOR_VERSION_EMAIL}"
-
-
-  CONNECTOR_VERSION_REST=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-rest</artifactId> <version>\(.*\)</version>.*@\1@g'`
-  echo "CONNECTOR_VERSION_REST: ${CONNECTOR_VERSION_REST}"
-}
-
-
 ########################################################################################################################
 # SCM AND BUILD FUNCTIONS
 ########################################################################################################################
@@ -300,6 +269,32 @@ detectStudioDependenciesVersions() {
   echo "STUDIO_WATCHDOG_VERSION: ${STUDIO_WATCHDOG_VERSION}"
 }
 
+# TODO store linearized pom in a variable
+# TODO do not depend on subsequent comment about connector name to detect version (too fragile)
+# TODO simplify in 7.9.3, directly parse maven properties, see https://github.com/bonitasoft/bonita-studio/commit/38d014e8f37f07c8b00cf19bb9bf180f51f65671
+detectConnectorsVersions() {
+  echo "Detecting Connectors versions"
+  local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml`
+#  echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n"
+#  local linearizedStudioPom=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | echo`
+#  echo "linearized ${linearizedStudioPom}"
+
+  CONNECTOR_VERSION_ALFRESCO=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-alfresco</artifactId> <version>\(.*\)</version>.*<!--CMIS CONNECTORS.*@\1@g'`
+  echo "CONNECTOR_VERSION_ALFRESCO: ${CONNECTOR_VERSION_ALFRESCO}"
+
+  CONNECTOR_VERSION_CMIS=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-cmis</artifactId> <version>\(.*\)</version>.*<!--DATABASE CONNECTORS.*@\1@g'`
+  echo "CONNECTOR_VERSION_CMIS: ${CONNECTOR_VERSION_CMIS}"
+
+  CONNECTOR_VERSION_DATABASE=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-database</artifactId> <version>\(.*\)</version>.*<!--EMAIL CONNECTOR..*@\1@g'`
+  echo "CONNECTOR_VERSION_DATABASE: ${CONNECTOR_VERSION_DATABASE}"
+
+  CONNECTOR_VERSION_EMAIL=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-email</artifactId> <version>\(.*\)</version>.*<!--GOOGLE CALENDAR CONNECTOR.*@\1@g'`
+  echo "CONNECTOR_VERSION_EMAIL: ${CONNECTOR_VERSION_EMAIL}"
+
+
+  CONNECTOR_VERSION_REST=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-rest</artifactId> <version>\(.*\)</version>.*@\1@g'`
+  echo "CONNECTOR_VERSION_REST: ${CONNECTOR_VERSION_REST}"
+}
 
 
 ########################################################################################################################
