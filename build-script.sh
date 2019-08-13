@@ -40,17 +40,9 @@ else
 fi
 
 
-# Detect version of depencies required to build Bonita components in Maven pom.xml files
-detectDependenciesVersions() {
-  echo "Detecting Studio dependencies versions"
-  local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_BPM_VERSION}/pom.xml`
 
-  UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
-  STUDIO_WATCHDOG_VERSION=`echo "${studioPom}" | grep watchdog.version | sed 's@.*>\(.*\)<.*@\1@g'`
 
-  echo "UID_VERSION: ${UID_VERSION}"
-  echo "STUDIO_WATCHDOG_VERSION: ${STUDIO_WATCHDOG_VERSION}"
-}
+
 
 # TODO store linearized pom in a variable
 # TODO do not depend on subsequent comment about connector name to detect version (too fragile)
@@ -78,38 +70,10 @@ detectConnectorsVersions() {
   echo "CONNECTOR_VERSION_REST: ${CONNECTOR_VERSION_REST}"
 }
 
-# List of repositories on https://github.com/bonitasoft that you don't need to build
-# Note that archived repositories are not listed here, as they are only required to build old Bonita versions
-#
-# angular-strap: automatically downloaded in the build of bonita-web project.
-# babel-preset-bonita: automatically downloaded in the build of bonita-ui-designer project.
-# bonita-codesign-windows: use to sign Windows binaries when building using Bonita Continuous Integration.
-# bonita-connector-talend: deprecated.
-# bonita-continuous-delivery-doc: Bonita Enterprise Edition Continuous Delivery module documentation.
-# bonita-custom-page-seed: a project to start building a custom page. Deprecated in favor of UI Designer page + REST API extension.
-# bonita-doc: Bonita documentation.
-# bonita-developer-resources: guidelines for contributing to Bonita, contributor license agreement, code style...
-# bonita-examples: Bonita usage code examples.
-# bonita-ici-doc: Bonita Enterprise Edition AI module documentation.
-# bonita-js-components: automatically downloaded in the build of projects that require it.
-# bonita-migration: migration tool to update a server from a previous Bonita release.
-# bonita-page-authorization-rules: documentation project to provide an example for page mapping authorization rule.
-# bonita-platform: deprecated, now part of bonita-engine repository.
-# bonita-connector-sap: deprecated. Use REST connector instead.
-# bonita-vacation-management-example: an example for Bonita Enterprise Edition Continuous Delivery module.
-# bonita-web-devtools: Bonitasoft internal development tools.
-# bonita-widget-contrib: project to start building custom widgets outside UI Designer.
-# create-react-app: required for Bonita Subscription Intelligent Continuous Improvement module.
-# dojo: Bonitasoft R&D coding dojos.
-# jscs-preset-bonita: Bonita JavaScript code guidelines.
-# ngUpload: automatically downloaded in the build of bonita-ui-designer project.
-# preact-chartjs-2: required for Bonita Subscription Intelligent Continuous Improvement module.
-# preact-content-loader: required for Bonita Subscription Intelligent Continuous Improvement module.
-# restlet-framework-java: /!\
-# sandbox: a sandbox for developers /!\ (private ?)
-# swt-repo: legacy repository required by Bonita Studio. Deprecated.
-# training-presentation-tool: fork of reveal.js with custom look and feel.
-# widget-builder: automatically downloaded in the build of bonita-ui-designer project.
+
+########################################################################################################################
+# SCM AND BUILD FUNCTIONS
+########################################################################################################################
 
 # params:
 # - Git repository name
@@ -313,64 +277,107 @@ build_gradle_build() {
   run_gradle_with_standard_system_properties
 }
 
-# 1s detect the versions of dependencies that will be built prior to build the Bonita Components
-detectDependenciesVersions
+
+
+########################################################################################################################
+# PARAMETERS PARSING AND VALIDATIONS
+########################################################################################################################
+
+
+
+########################################################################################################################
+# TOOLING
+########################################################################################################################
+
+detectStudioDependenciesVersions() {
+  echo "Detecting dependencies versions"
+  local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_BPM_VERSION}/pom.xml`
+
+  STUDIO_UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
+  STUDIO_WATCHDOG_VERSION=`echo "${studioPom}" | grep watchdog.version | sed 's@.*>\(.*\)<.*@\1@g'`
+
+  echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"
+  echo "STUDIO_WATCHDOG_VERSION: ${STUDIO_WATCHDOG_VERSION}"
+}
+
+
+
+########################################################################################################################
+# MAIN
+########################################################################################################################
+
+# List of repositories on https://github.com/bonitasoft that you don't need to build
+# Note that archived repositories are not listed here, as they are only required to build old Bonita versions
+#
+# angular-strap: automatically downloaded in the build of bonita-web project.
+# babel-preset-bonita: automatically downloaded in the build of bonita-ui-designer project.
+# bonita-codesign-windows: use to sign Windows binaries when building using Bonita Continuous Integration.
+# bonita-connector-talend: deprecated.
+# bonita-continuous-delivery-doc: Bonita Enterprise Edition Continuous Delivery module documentation.
+# bonita-custom-page-seed: a project to start building a custom page. Deprecated in favor of UI Designer page + REST API extension.
+# bonita-doc: Bonita documentation.
+# bonita-developer-resources: guidelines for contributing to Bonita, contributor license agreement, code style...
+# bonita-examples: Bonita usage code examples.
+# bonita-ici-doc: Bonita Enterprise Edition AI module documentation.
+# bonita-js-components: automatically downloaded in the build of projects that require it.
+# bonita-migration: migration tool to update a server from a previous Bonita release.
+# bonita-page-authorization-rules: documentation project to provide an example for page mapping authorization rule.
+# bonita-platform: deprecated, now part of bonita-engine repository.
+# bonita-connector-sap: deprecated. Use REST connector instead.
+# bonita-vacation-management-example: an example for Bonita Enterprise Edition Continuous Delivery module.
+# bonita-web-devtools: Bonitasoft internal development tools.
+# bonita-widget-contrib: project to start building custom widgets outside UI Designer.
+# create-react-app: required for Bonita Subscription Intelligent Continuous Improvement module.
+# dojo: Bonitasoft R&D coding dojos.
+# jscs-preset-bonita: Bonita JavaScript code guidelines.
+# ngUpload: automatically downloaded in the build of bonita-ui-designer project.
+# preact-chartjs-2: required for Bonita Subscription Intelligent Continuous Improvement module.
+# preact-content-loader: required for Bonita Subscription Intelligent Continuous Improvement module.
+# restlet-framework-java: /!\
+# sandbox: a sandbox for developers /!\ (private ?)
+# swt-repo: legacy repository required by Bonita Studio. Deprecated.
+# training-presentation-tool: fork of reveal.js with custom look and feel.
+# widget-builder: automatically downloaded in the build of bonita-ui-designer project.
+
+
 
 
 build_gradle_build bonita-engine
 
 build_maven_wrapper_install_maven_test_skip bonita-userfilters
 
-# Each connectors implementation version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml.
-# For the version of bonita-connectors refers to one of the included connector and use the parent project version (parent project should be bonita-connectors).
-# You need to find connector git repository tag that provides a given connector implementation version.
-build_maven_install_maven_test_skip bonita-connectors 1.0.0
-
-build_maven_install_maven_test_skip bonita-connector-alfresco 2.0.1
-
-build_maven_install_maven_test_skip bonita-connector-cmis 3.0.3
-
-build_maven_install_maven_test_skip bonita-connector-database 2.0.0
-
-build_maven_install_maven_test_skip bonita-connector-email 1.1.0
-
-build_maven_install_maven_test_skip bonita-connector-googlecalendar-V3 bonita-connector-google-calendar-v3-1.0.0
-
-build_maven_install_maven_test_skip bonita-connector-ldap bonita-connector-ldap-1.0.1
-
-build_maven_install_maven_test_skip bonita-connector-rest 1.0.5
-
-build_maven_install_maven_test_skip bonita-connector-salesforce 1.1.2
-
-build_maven_install_maven_test_skip bonita-connector-scripting 1.1.0
-
-build_maven_install_maven_test_skip bonita-connector-twitter 1.2.0
-
-build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
-
-# Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
-build_maven_install_maven_test_skip bonita-studio-watchdog studio-watchdog-${STUDIO_WATCHDOG_VERSION}
+build_maven_install_maven_test_skip bonita-web-extensions
+build_maven_install_skiptest bonita-web
+build_maven_install_maven_test_skip bonita-portal-js
 
 # bonita-web-pages is build using a specific version of UI Designer.
 # Version is defined in https://github.com/bonitasoft/bonita-web-pages/blob/$BONITA_BPM_VERSION/build.gradle
 # FIXME: this will be removed in future release as the same version as the one package in the release will be used.
 build_maven_install_skiptest bonita-ui-designer 1.9.53
-
 build_gradle_build bonita-web-pages
-
-# This is the version of the UI Designer embedded in Bonita release
-# Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
-build_maven_install_skiptest bonita-ui-designer ${UID_VERSION}
-
-build_maven_install_maven_test_skip bonita-web-extensions
-
-build_maven_install_skiptest bonita-web
-
-build_maven_install_maven_test_skip bonita-portal-js
 
 build_maven_install_maven_test_skip bonita-distrib
 
-# Version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/pom.xml
+# Each connectors implementation version is defined in https://github.com/bonitasoft/bonita-studio/blob/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml.
+# For the version of bonita-connectors refers to one of the included connector and use the parent project version (parent project should be bonita-connectors).
+# You need to find connector git repository tag that provides a given connector implementation version.
+build_maven_install_maven_test_skip bonita-connectors 1.0.0
+build_maven_install_maven_test_skip bonita-connector-alfresco 2.0.1
+build_maven_install_maven_test_skip bonita-connector-cmis 3.0.3
+build_maven_install_maven_test_skip bonita-connector-database 2.0.0
+build_maven_install_maven_test_skip bonita-connector-email 1.1.0
+build_maven_install_maven_test_skip bonita-connector-googlecalendar-V3 bonita-connector-google-calendar-v3-1.0.0
+build_maven_install_maven_test_skip bonita-connector-ldap bonita-connector-ldap-1.0.1
+build_maven_install_maven_test_skip bonita-connector-rest 1.0.5
+build_maven_install_maven_test_skip bonita-connector-salesforce 1.1.2
+build_maven_install_maven_test_skip bonita-connector-scripting 1.1.0
+build_maven_install_maven_test_skip bonita-connector-twitter 1.2.0
+build_maven_install_maven_test_skip bonita-connector-webservice 1.2.2
+
+
+detectStudioDependenciesVersions
+build_maven_install_maven_test_skip bonita-studio-watchdog studio-watchdog-${STUDIO_WATCHDOG_VERSION}
 build_maven_install_maven_test_skip image-overlay-plugin image-overlay-plugin-1.0.8
+build_maven_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
 
 build_maven_wrapper_verify_maven_test_skip_with_profile bonita-studio mirrored,generate
