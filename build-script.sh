@@ -176,15 +176,15 @@ checkout() {
 }
 
 run_maven_with_standard_system_properties() {
-  build_command="$build_command -Dbonita.engine.version=$BONITA_BPM_VERSION -Dp2MirrorUrl=${STUDIO_P2_URL}/"
+  build_command="$build_command -Dbonita.engine.version=$BONITA_BPM_VERSION -Dp2MirrorUrl=${STUDIO_P2_URL}"
   eval "$build_command"
-  # Go back to script folder (checkout move current dirrectory to project checkout folder.
+  # Go back to script folder (checkout move current directory to project checkout folder.
   cd ..
 }
 
 run_gradle_with_standard_system_properties() {
   eval "$build_command"
-  # Go back to script folder (checkout move current dirrectory to project checkout folder.
+  # Go back to script folder (checkout move current directory to project checkout folder.
   cd ..
 }
 
