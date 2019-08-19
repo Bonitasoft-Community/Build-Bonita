@@ -1,3 +1,4 @@
+# Repositories
 bonita-connector-alfresco
 bonita-connector-cmis
 bonita-connector-database
@@ -11,13 +12,16 @@ bonita-connector-twitter
 bonita-connector-webservice
 bonita-connectors
 bonita-distrib
+bonita-engine
 bonita-portal-js
 bonita-studio-watchdog
 bonita-studio
-bonita-theme-builder
 bonita-ui-designer
 bonita-userfilters
 bonita-web-extensions
+bonita-web-pages
 bonita-web
-community
 image-overlay-plugin
+
+# IDE
+.idea/
