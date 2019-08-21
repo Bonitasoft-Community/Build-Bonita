@@ -140,7 +140,6 @@ run_maven_with_standard_system_properties() {
 }
 
 run_gradle_with_standard_system_properties() {
-	build_command="$build_command -Dbonita.engine.version=$BONITA_BPM_VERSION -Dp2MirrorUrl=${STUDIO_P2_URL}"
 	echo "[DEBUG] Running build command: $build_command"
 	eval "$build_command"
 	# Go back to script folder (checkout move current directory to project checkout folder.
@@ -299,33 +298,6 @@ detectStudioDependenciesVersions() {
 	echo "STUDIO_WATCHDOG_VERSION: ${STUDIO_WATCHDOG_VERSION}"
 }
 
-# TODO store linearized pom in a variable
-# TODO do not depend on subsequent comment about connector name to detect version (too fragile)
-# TODO simplify in 7.9.3, directly parse maven properties, see https://github.com/bonitasoft/bonita-studio/commit/38d014e8f37f07c8b00cf19bb9bf180f51f65671
-detectConnectorsVersions() {
-	echo "Detecting Connectors versions"
-	local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/$BONITA_BPM_VERSION/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml`
-	#  echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n"
-	#  local linearizedStudioPom=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | echo`
-	#  echo "linearized ${linearizedStudioPom}"
-
-	CONNECTOR_VERSION_ALFRESCO=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-alfresco</artifactId> <version>\(.*\)</version>.*<!--CMIS CONNECTORS.*@\1@g'`
-	echo "CONNECTOR_VERSION_ALFRESCO: ${CONNECTOR_VERSION_ALFRESCO}"
-
-	CONNECTOR_VERSION_CMIS=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-cmis</artifactId> <version>\(.*\)</version>.*<!--DATABASE CONNECTORS.*@\1@g'`
-	echo "CONNECTOR_VERSION_CMIS: ${CONNECTOR_VERSION_CMIS}"
-
-	CONNECTOR_VERSION_DATABASE=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-database</artifactId> <version>\(.*\)</version>.*<!--EMAIL CONNECTOR..*@\1@g'`
-	echo "CONNECTOR_VERSION_DATABASE: ${CONNECTOR_VERSION_DATABASE}"
-
-	CONNECTOR_VERSION_EMAIL=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-email</artifactId> <version>\(.*\)</version>.*<!--GOOGLE CALENDAR CONNECTOR.*@\1@g'`
-	echo "CONNECTOR_VERSION_EMAIL: ${CONNECTOR_VERSION_EMAIL}"
-
-
-	CONNECTOR_VERSION_REST=`echo "${studioPom}" | tr --squeeze-repeats "[:blank:]" | tr --delete "\n" | sed 's@.*<artifactId>bonita-connector-rest</artifactId> <version>\(.*\)</version>.*@\1@g'`
-	echo "CONNECTOR_VERSION_REST: ${CONNECTOR_VERSION_REST}"
-}
-
 
 ########################################################################################################################
 # MAIN
@@ -347,7 +319,6 @@ detectConnectorsVersions() {
 # bonita-js-components: automatically downloaded in the build of projects that require it.
 # bonita-migration: migration tool to update a server from a previous Bonita release.
 # bonita-page-authorization-rules: documentation project to provide an example for page mapping authorization rule.
-# bonita-platform: deprecated, now part of bonita-engine repository.
 # bonita-connector-sap: deprecated. Use REST connector instead.
 # bonita-vacation-management-example: an example for Bonita Enterprise Edition Continuous Delivery module.
 # bonita-web-devtools: Bonitasoft internal development tools.
@@ -378,7 +349,7 @@ build_maven_install_maven_test_skip bonita-portal-js
 
 # bonita-web-pages is build using a specific version of UI Designer.
 # Version is defined in https://github.com/bonitasoft/bonita-web-pages/blob/$BONITA_BPM_VERSION/build.gradle
-build_maven_install_skiptest bonita-ui-designer 1.9.53
+build_maven_wrapper_install_maven_test_skip bonita-ui-designer 1.9.53
 # FIXME: see pull request to fix the issue: https://github.com/bonitasoft/bonita-ui-designer-sp/pull/2774
 build_gradle_wrapper_test_skip_publishToMavenLocal bonita-web-pages
 
