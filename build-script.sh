@@ -7,7 +7,6 @@ set +o nounset
 
 # If you want to make 100% sure that you do a clean build from scratch:
 # rm -rf ~/.m2/repository/org/bonitasoft/
-# rm -rf ~/.m2/repository/org/bonitasoft/
 # rm -rf ~/.gradle/caches
 # rm -rf .gradle in the folder where the script is located
 
