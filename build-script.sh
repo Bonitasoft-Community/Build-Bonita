@@ -17,7 +17,7 @@ BONITA_BUILD_STUDIO_ONLY=${BONITA_BUILD_STUDIO_ONLY:-false}
 BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
-BONITA_VERSION=7.11.0.beta-01
+BONITA_VERSION=7.11.0
 
 
 ########################################################################################################################
