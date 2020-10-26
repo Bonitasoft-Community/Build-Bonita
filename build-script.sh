@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=7.12.0.W41
+BONITA_VERSION=7.12.0.W43
 
 
 ########################################################################################################################
@@ -64,7 +64,7 @@ checkout() {
 
     # If we don't already clone the repository do it
     if [ ! -d "$checkout_folder_name/.git" ]; then
-      git clone "https://github.com/bonitasoft/$repository_name.git" $checkout_folder_name
+      git clone --depth 1 "https://github.com/bonitasoft/$repository_name.git" $checkout_folder_name 
     fi
     # Ensure we fetch all the tags and that we are on the appropriate one
     git -C $checkout_folder_name fetch --tags
@@ -336,49 +336,8 @@ detectStudioDependenciesVersions() {
 	echoHeaders "Detecting Studio dependencies versions"
 	local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/pom.xml`
 
-    STUDIO_IMAGE_OVERLAY_PLUGIN_VERSION=`echo "${studioPom}" | grep image-overlay-plugin.version | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
     STUDIO_UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
-
-    echo "STUDIO_IMAGE_OVERLAY_PLUGIN_VERSION: ${STUDIO_IMAGE_OVERLAY_PLUGIN_VERSION}"
     echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"
-}
-
-detectConnectorsVersions() {
-  echoHeaders "Detecting Connectors versions"
-  local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/bundles/plugins/org.bonitasoft.studio.connectors/pom.xml`
-
-    CONNECTOR_VERSION_ALFRESCO=`echo "${studioPom}" | grep connector.version.alfresco | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_ALFRESCO: ${CONNECTOR_VERSION_ALFRESCO}"
-
-    CONNECTOR_VERSION_CMIS=`echo "${studioPom}" | grep connector.version.cmis | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_CMIS: ${CONNECTOR_VERSION_CMIS}"
-
-    CONNECTOR_VERSION_DATABASE=`echo "${studioPom}" | grep connector.version.database | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_DATABASE: ${CONNECTOR_VERSION_DATABASE}"
-
-    CONNECTOR_VERSION_EMAIL=`echo "${studioPom}" | grep connector.version.email | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_EMAIL: ${CONNECTOR_VERSION_EMAIL}"
-
-    CONNECTOR_VERSION_GOOGLE_CALENDAR_V3=`echo "${studioPom}" | grep google-calendar-v3 | grep -v '<version>' | grep -v 'impl' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_GOOGLE_CALENDAR_V3: ${CONNECTOR_VERSION_GOOGLE_CALENDAR_V3}"
-
-    CONNECTOR_VERSION_LDAP=`echo "${studioPom}" | grep connector.version.ldap | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_LDAP: ${CONNECTOR_VERSION_LDAP}"
-
-    CONNECTOR_VERSION_REST=`echo "${studioPom}" | grep connector.version.rest | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_REST: ${CONNECTOR_VERSION_REST}"
-
-    CONNECTOR_VERSION_SALESFORCE=`echo "${studioPom}" | grep connector.version.salesforce | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_SALESFORCE: ${CONNECTOR_VERSION_SALESFORCE}"
-
-    CONNECTOR_VERSION_SCRIPTING=`echo "${studioPom}" | grep connector.version.scripting | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_SCRIPTING: ${CONNECTOR_VERSION_SCRIPTING}"
-
-    CONNECTOR_VERSION_TWITTER=`echo "${studioPom}" | grep connector.version.twitter | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_TWITTER: ${CONNECTOR_VERSION_TWITTER}"
-
-    CONNECTOR_VERSION_WEBSERVICE=`echo "${studioPom}" | grep connector.version.webservice | grep -v '<version>' | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "CONNECTOR_VERSION_WEBSERVICE: ${CONNECTOR_VERSION_WEBSERVICE}"
 }
 
 detectWebPagesDependenciesVersions() {
@@ -434,8 +393,6 @@ echo
 if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
     build_gradle_wrapper_test_skip_publishToMavenLocal bonita-engine
 
-    build_maven_wrapper_install_skiptest bonita-userfilters
-
     build_maven_wrapper_install_skiptest bonita-web-extensions
 
     build_maven_wrapper_install_skiptest bonita-web
@@ -448,24 +405,7 @@ if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
 
     build_maven_wrapper_install_skiptest bonita-distrib
 
-    # Connectors
-    detectConnectorsVersions
-
-    build_maven_wrapper_install_skiptest bonita-connector-cmis ${CONNECTOR_VERSION_CMIS}
-    build_maven_wrapper_install_skiptest bonita-connector-database ${CONNECTOR_VERSION_DATABASE}
-    build_maven_wrapper_install_skiptest bonita-connector-email ${CONNECTOR_VERSION_EMAIL}
-    build_maven_wrapper_install_skiptest bonita-connector-ldap ${CONNECTOR_VERSION_LDAP}
-    build_maven_wrapper_install_skiptest bonita-connector-rest ${CONNECTOR_VERSION_REST}
-    build_maven_wrapper_install_skiptest bonita-connector-salesforce ${CONNECTOR_VERSION_SALESFORCE}
-    build_maven_wrapper_install_skiptest bonita-connector-scripting ${CONNECTOR_VERSION_SCRIPTING}
-    build_maven_wrapper_install_skiptest bonita-connector-twitter ${CONNECTOR_VERSION_TWITTER}
-    build_maven_wrapper_install_skiptest bonita-connector-webservice ${CONNECTOR_VERSION_WEBSERVICE}
-    # connectors using legacy way of building
-    build_maven_install_skiptest bonita-connector-alfresco ${CONNECTOR_VERSION_ALFRESCO}
-    build_maven_install_skiptest bonita-connector-googlecalendar-V3 bonita-connector-google-calendar-v3-${CONNECTOR_VERSION_GOOGLE_CALENDAR_V3}
-
     detectStudioDependenciesVersions
-    build_maven_wrapper_install_skiptest image-overlay-plugin image-overlay-plugin-${STUDIO_IMAGE_OVERLAY_PLUGIN_VERSION}
     build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
     build_maven_wrapper_install_skiptest bonita-data-repository
 else
