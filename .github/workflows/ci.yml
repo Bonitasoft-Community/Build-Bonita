@@ -45,35 +45,22 @@ jobs:
       env:
         BONITA_BUILD_QUIET: true
         BONITA_BUILD_STUDIO_SKIP: true
-    # TODO see if we can create an action for bundle/studio artifact preparation and upload
-    - name: Prepare Bonita bundle for upload
-      shell: bash
-      run: |
-        mkdir -p artifacts/bundle
-        cp bonita-distrib/tomcat/target/*.zip artifacts/bundle/
-        ls -lh artifacts/bundle/
     - name: Upload Bonita bundle
       # see https://help.github.com/en/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts and https://github.com/actions/upload-artifact
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v2.2.0
       with:
         # see https://github.community/t5/GitHub-Actions/Use-variables-in-upload-artifact/m-p/34778#M2009
         name: bonita-bundle-${{matrix.os.short}}-build-${{github.sha}}
-        path: artifacts/bundle/
+        path: bonita-distrib/tomcat/target/*.zip
     - name: Build Studio
       shell: bash
       run: ./build-script.sh
       env:
         BONITA_BUILD_QUIET: true
         BONITA_BUILD_STUDIO_ONLY: true
-    - name: Prepare Bonita Studio for upload
-      shell: bash
-      run: |
-        mkdir -p artifacts/studio
-        cp bonita-studio/all-in-one/target/*.zip artifacts/studio/
-        ls -lh artifacts/studio/
     - name: Upload Bonita Studio
       # see https://github.com/actions/upload-artifact
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v2.2.0
       with:
         name: bonita-studio-${{matrix.os.short}}-build-${{github.sha}}
-        path: artifacts/studio/
+        path: bonita-studio/all-in-one/target/*.zip
