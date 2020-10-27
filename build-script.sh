@@ -145,20 +145,6 @@ profile() {
     build_command="$build_command -P$1"
 }
 
-#FIXME: should be replaced in all projects by Maven wrapper
-# params:
-# - Git repository name
-# - Branch name (optional)
-build_maven_install_skiptest() {
-    checkout "$@"
-    build_maven
-    build_quiet_if_requested
-    clean
-    install
-    skiptest
-    run_maven_with_standard_system_properties
-}
-
 # params:
 # - Git repository name
 # - Profile name
