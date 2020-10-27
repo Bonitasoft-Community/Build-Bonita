@@ -165,10 +165,6 @@ build_maven_wrapper_verify_skiptest_with_profile()
 build_maven_wrapper_install_skiptest()
 {
     checkout "$@"
-    # FIXME: required to build UID
-    # This has been fixed in UID 1.9.56, see https://github.com/bonitasoft/bonita-ui-designer/commit/edf0a0c7f943e8f215890550247d61eba14932c6
-    # To be removed when we will build newest UID versions
-    chmod u+x mvnw
     build_maven_wrapper
     build_quiet_if_requested
     clean
