@@ -18,7 +18,6 @@ the Bonita Studio.
 - Disk space: around 15 GB free space. Around 4 GB of dependencies will be downloaded (sources, 3rd party dependencies,
 ...). A fast internet connection is recommended.
 - OS: Linux, MacOS and Windows (see test environments list below)
-- Maven: 3.6.x.
 - Java: Oracle/OpenJDK Java 8 (⚠ you cannot use Java 11 to build Bonita).
 
 

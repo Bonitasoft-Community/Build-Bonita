@@ -89,11 +89,6 @@ run_gradle_with_standard_system_properties() {
     cd ..
 }
 
-# FIXME: should be replaced in all project by Maven wrapper
-build_maven() {
-    build_command="mvn"
-}
-
 build_maven_wrapper() {
     build_command="./mvnw"
 }
@@ -239,16 +234,6 @@ checkPrerequisites() {
             fi
             echo "  > X server running correctly"
         fi
-    fi
-
-    # Test that Maven exists
-    # FIXME: remove once all projects includes Maven wrapper
-    if hash mvn 2>/dev/null; then
-        MAVEN_VERSION="$(mvn --version 2>&1 | awk -F " " 'NR==1 {print $3}')"
-        echo "  > Use Maven version: $MAVEN_VERSION"
-    else
-        echo "Maven not found. Exiting."
-        exit 1
     fi
 
     # Test if Curl exists
