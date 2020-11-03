@@ -47,13 +47,7 @@ find -type d -name target -prune -exec rm -rf {} \;
 
 ## Test environments
 
-This script has been manually tested with the following environment:
-- Debian GNU/Linux Buster
-- Maven 3.6.0
-- Oracle Java 1.8.0_221
-
-
-In addition, CI builds are run on push to master/dev branches and Pull Requests (see badges on top of this page)
+CI builds are run on push to master/dev branches and Pull Requests (see badges on top of this page)
 - Linux: Ubuntu Xenial (Travis CI)
 - MacOS: Catalina (Github Actions)
 - Windows: Windows Server 2019 DataCenter (Github Actions)
