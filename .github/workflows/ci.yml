@@ -1,4 +1,4 @@
-name: MacOS and Windows Build
+name: Build
 
 on:
   push:
@@ -25,8 +25,9 @@ jobs:
       matrix:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
-          - {name: macos-latest, short: "macos" }
-          - {name: windows-latest, short: "windows" }
+          - {name: ubuntu-20.04, short: "ubuntu" }
+          - {name: macos-10.15, short: "macos" }
+          - {name: windows-2019, short: "windows" }
     steps:
     - name: Checkout
       uses: actions/checkout@v1
