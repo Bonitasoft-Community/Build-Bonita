@@ -55,7 +55,9 @@ This script has been manually tested with the following environment:
 
 
 In addition, CI builds are run on push to master/dev branches and Pull Requests (see badges on top of this page)
-- Linux: Ubuntu 18.04 (Travis CI) and Ubuntu 20.04 (GitHub Actions)
+- Linux:
+  - Ubuntu 18.04 (Travis CI)
+  - Ubuntu 20.04 (GitHub Actions) - _**this is experimental, Bonita doesn't officially support this version**_
 - MacOS: Catalina (GitHub Actions)
 - Windows: Windows Server 2019 DataCenter (GitHub Actions)
 
