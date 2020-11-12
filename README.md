@@ -1,8 +1,8 @@
 # Build Bonita from sources
 
-[![Travis build](https://img.shields.io/travis/Bonitasoft-Community/Build-Bonita/master?label=Linux%20build&logo=travis)](https://travis-ci.org/Bonitasoft-Community/Build-Bonita)
+[![Linux build](https://img.shields.io/travis/Bonitasoft-Community/Build-Bonita/master?label=Linux%20build&logo=travis)](https://travis-ci.org/Bonitasoft-Community/Build-Bonita)
 
-[![GitHub build](https://github.com/Bonitasoft-Community/Build-Bonita/workflows/Build/badge.svg)](https://github.com/Bonitasoft-Community/Build-Bonita/actions)
+[![MacOS and Windows build](https://github.com/Bonitasoft-Community/Build-Bonita/workflows/MacOS%20and%20Windows%20Build/badge.svg)](https://github.com/Bonitasoft-Community/Build-Bonita/actions)
 
 
 ## Overview
@@ -55,9 +55,7 @@ This script has been manually tested with the following environment:
 
 
 In addition, CI builds are run on push to master/dev branches and Pull Requests (see badges on top of this page)
-- Linux:
-  - Ubuntu 18.04 (Travis CI)
-  - Ubuntu 20.04 (GitHub Actions) - _**this is experimental, Bonita doesn't officially support this version**_
+- Linux: Ubuntu 18.04 (Travis CI)
 - MacOS: Catalina (GitHub Actions)
 - Windows: Windows Server 2019 DataCenter (GitHub Actions)
 
