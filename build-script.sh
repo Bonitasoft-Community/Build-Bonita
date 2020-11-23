@@ -332,14 +332,6 @@ checkJavaVersion() {
 # TOOLING
 ########################################################################################################################
 
-detectStudioDependenciesVersions() {
-	echoHeaders "Detecting Studio dependencies versions"
-	local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/pom.xml`
-
-    STUDIO_UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
-    echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"
-}
-
 detectWebPagesDependenciesVersions() {
 	echoHeaders "Detecting web-pages dependencies versions"
 	local webPagesGradleBuild=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-web-pages/${BONITA_VERSION}/build.gradle`
@@ -405,14 +397,12 @@ if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
 
     build_maven_wrapper_install_skiptest bonita-distrib
 
-    detectStudioDependenciesVersions
-    build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
-    build_maven_wrapper_install_skiptest bonita-data-repository
 else
     echoHeaders "Skipping all build prior the Studio part"
 fi
 
 if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
+    build_maven_wrapper_install_skiptest bonita-data-repository
     build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests
 else
     echoHeaders "Skipping the Studio build"
