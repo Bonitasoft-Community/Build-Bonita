@@ -64,7 +64,7 @@ checkout() {
 
     # If we don't already clone the repository do it
     if [ ! -d "$checkout_folder_name/.git" ]; then
-      git clone --depth 1 "https://github.com/bonitasoft/$repository_name.git" $checkout_folder_name 
+      git clone --depth 1 "https://github.com/bonitasoft/$repository_name.git" $checkout_folder_name
     fi
     # Ensure we fetch all the tags and that we are on the appropriate one
     git -C $checkout_folder_name fetch --tags
