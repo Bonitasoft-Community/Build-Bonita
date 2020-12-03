@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=7.12.0.W43
+BONITA_VERSION=7.12.0.beta-04
 
 
 ########################################################################################################################
@@ -89,11 +89,6 @@ run_gradle_with_standard_system_properties() {
     cd ..
 }
 
-# FIXME: should be replaced in all project by Maven wrapper
-build_maven() {
-    build_command="mvn"
-}
-
 build_maven_wrapper() {
     build_command="./mvnw"
 }
@@ -145,20 +140,6 @@ profile() {
     build_command="$build_command -P$1"
 }
 
-#FIXME: should be replaced in all projects by Maven wrapper
-# params:
-# - Git repository name
-# - Branch name (optional)
-build_maven_install_skiptest() {
-    checkout "$@"
-    build_maven
-    build_quiet_if_requested
-    clean
-    install
-    skiptest
-    run_maven_with_standard_system_properties
-}
-
 # params:
 # - Git repository name
 # - Profile name
@@ -179,10 +160,6 @@ build_maven_wrapper_verify_skiptest_with_profile()
 build_maven_wrapper_install_skiptest()
 {
     checkout "$@"
-    # FIXME: required to build UID
-    # This has been fixed in UID 1.9.56, see https://github.com/bonitasoft/bonita-ui-designer/commit/edf0a0c7f943e8f215890550247d61eba14932c6
-    # To be removed when we will build newest UID versions
-    chmod u+x mvnw
     build_maven_wrapper
     build_quiet_if_requested
     clean
@@ -257,16 +234,6 @@ checkPrerequisites() {
             fi
             echo "  > X server running correctly"
         fi
-    fi
-
-    # Test that Maven exists
-    # FIXME: remove once all projects includes Maven wrapper
-    if hash mvn 2>/dev/null; then
-        MAVEN_VERSION="$(mvn --version 2>&1 | awk -F " " 'NR==1 {print $3}')"
-        echo "  > Use Maven version: $MAVEN_VERSION"
-    else
-        echo "Maven not found. Exiting."
-        exit 1
     fi
 
     # Test if Curl exists

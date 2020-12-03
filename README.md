@@ -18,7 +18,6 @@ the Bonita Studio.
 - Disk space: around 15 GB free space. Around 4 GB of dependencies will be downloaded (sources, 3rd party dependencies,
 ...). A fast internet connection is recommended.
 - OS: Linux, MacOS and Windows (see test environments list below)
-- Maven: 3.6.x.
 - Java: Oracle/OpenJDK Java 8 (⚠ you cannot use Java 11 to build Bonita).
 
 
@@ -48,13 +47,7 @@ find -type d -name target -prune -exec rm -rf {} \;
 
 ## Test environments
 
-This script has been manually tested with the following environment:
-- Debian GNU/Linux Buster
-- Maven 3.6.0
-- Oracle Java 1.8.0_221
-
-
-In addition, CI builds are run on push to master/dev branches and Pull Requests (see badges on top of this page)
+CI builds are run on push to master/dev branches and Pull Requests (see badges on top of this page)
 - Linux: Ubuntu 18.04 (Travis CI)
 - MacOS: Catalina (GitHub Actions)
 - Windows: Windows Server 2019 DataCenter (GitHub Actions)
