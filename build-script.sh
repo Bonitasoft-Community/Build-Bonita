@@ -278,7 +278,7 @@ checkJavaVersion() {
     fi
 
     java_version_1st_digit=$(echo "$java_full_version" | sed 's/\(.*\)\..*\..*$/\1/g')
-    java_version_expected=8
+    java_version_expected=11
     # pre Java 9 versions, get minor version
     if [[ "$java_version_1st_digit" -eq "1" ]]; then
       java_version=$(echo "$java_full_version" | sed 's/.*\.\(.*\)\..*$/\1/g')
