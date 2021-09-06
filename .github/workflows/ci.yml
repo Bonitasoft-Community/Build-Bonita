@@ -43,7 +43,7 @@ jobs:
       shell: bash
       run: ./build-script.sh
       env:
-        BONITA_BUILD_QUIET: true
+        BONITA_BUILD_QUIET: fakse
         BONITA_BUILD_STUDIO_SKIP: true
     - name: Upload Bonita bundle
       # see https://help.github.com/en/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts and https://github.com/actions/upload-artifact
