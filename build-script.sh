@@ -362,6 +362,11 @@ if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
     build_maven_wrapper_install_skiptest bonita-ui-designer ${WEB_PAGES_UID_VERSION}
     build_gradle_wrapper_test_skip_publishToMavenLocal bonita-web-pages
 
+    build_maven_wrapper_install_skiptest bonita-application-directory
+    build_maven_wrapper_install_skiptest bonita-user-application
+    build_maven_wrapper_install_skiptest bonita-admin-application
+    build_maven_wrapper_install_skiptest bonita-super-admin-application
+
     build_maven_wrapper_install_skiptest bonita-distrib
 
 else
