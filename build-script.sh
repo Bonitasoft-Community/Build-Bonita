@@ -307,6 +307,15 @@ detectWebPagesDependenciesVersions() {
     echo "WEB_PAGES_UID_VERSION: ${WEB_PAGES_UID_VERSION}"
 }
 
+detectStudioDependenciesVersions() {
+	echoHeaders "Detecting Studio dependencies versions"
+	local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/pom.xml`
+
+    STUDIO_UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
+    echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"
+}
+
+
 
 ########################################################################################################################
 # MAIN
@@ -375,6 +384,7 @@ fi
 
 if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
     build_maven_wrapper_install_skiptest bonita-data-repository
+    build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
     build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests
 else
     echoHeaders "Skipping the Studio build"
