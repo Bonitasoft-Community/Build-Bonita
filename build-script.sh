@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=7.13.0.W36-03
+BONITA_VERSION=7.13.0.W36
 
 
 ########################################################################################################################
