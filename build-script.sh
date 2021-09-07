@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=7.13.0.W36
+BONITA_VERSION=7.13.0.W36-04
 
 
 ########################################################################################################################
@@ -366,7 +366,7 @@ if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
     build_maven_wrapper_install_skiptest bonita-web
     build_maven_wrapper_install_skiptest bonita-portal-js
 
-    # bonita-web-pages is build using a specific version of UI Designer.
+    # bonita-web-pages uses a dedicated UID version
     detectWebPagesDependenciesVersions
     build_maven_wrapper_install_skiptest bonita-ui-designer ${WEB_PAGES_UID_VERSION}
     build_gradle_wrapper_test_skip_publishToMavenLocal bonita-web-pages
@@ -384,7 +384,11 @@ fi
 
 if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
     build_maven_wrapper_install_skiptest bonita-data-repository
+    
+    # bonita-studio uses a dedicated UID version
+    detectStudioDependenciesVersions
     build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
+    
     build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests
 else
     echoHeaders "Skipping the Studio build"
