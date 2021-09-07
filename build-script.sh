@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=7.13.0.W36
+BONITA_VERSION=7.13.0.W36-02
 
 
 ########################################################################################################################
@@ -300,16 +300,16 @@ checkJavaVersion() {
 ########################################################################################################################
 
 detectWebPagesDependenciesVersions() {
-	echoHeaders "Detecting web-pages dependencies versions"
-	local webPagesGradleBuild=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-web-pages/${BONITA_VERSION}/build.gradle`
+    echoHeaders "Detecting web-pages dependencies versions"
+    local webPagesGradleBuild=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-web-pages/${BONITA_VERSION}/build.gradle`
 
     WEB_PAGES_UID_VERSION=`echo "${webPagesGradleBuild}" | tr -s "[:blank:]" | tr -d "\n" | sed 's@.*UIDesigner {\(.*\)"}.*@\1@g' | sed 's@.*version "\(.*\)@\1@g'`
     echo "WEB_PAGES_UID_VERSION: ${WEB_PAGES_UID_VERSION}"
 }
 
 detectStudioDependenciesVersions() {
-	echoHeaders "Detecting Studio dependencies versions"
-	local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/pom.xml`
+    echoHeaders "Detecting Studio dependencies versions"
+    local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/pom.xml`
 
     STUDIO_UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
     echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"
