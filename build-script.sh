@@ -311,7 +311,7 @@ detectStudioDependenciesVersions() {
     echoHeaders "Detecting Studio dependencies versions"
     local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/pom.xml`
 
-    STUDIO_UID_VERSION=`echo "${studioPom}" | grep ui.designer.version | sed 's@.*>\(.*\)<.*@\1@g'`
+    STUDIO_UID_VERSION=`echo "${studioPom}" | grep \<ui.designer.version\> | sed 's@.*>\(.*\)<.*@\1@g'`
     echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"
 }
 
@@ -377,7 +377,6 @@ if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
     build_maven_wrapper_install_skiptest bonita-super-admin-application
 
     build_maven_wrapper_install_skiptest bonita-distrib
-
 else
     echoHeaders "Skipping all build prior the Studio part"
 fi
