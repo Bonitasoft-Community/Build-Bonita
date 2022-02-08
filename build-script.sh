@@ -75,7 +75,7 @@ checkout() {
 }
 
 run_maven_with_standard_system_properties() {
-	build_command="$build_command -Dengine.version=$BONITA_VERSION -Dfilters.version=$BONITA_VERSION"
+	build_command="$build_command -Dengine.version=$BONITA_VERSION"
     echo "[DEBUG] Running build command: $build_command"
     eval "$build_command"
     # Go back to script folder (checkout move current directory to project checkout folder.
@@ -388,7 +388,7 @@ if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
     detectStudioDependenciesVersions
     build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
     
-    build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests
+    build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests,local-repository
 else
     echoHeaders "Skipping the Studio build"
 fi
