@@ -64,3 +64,39 @@ jobs:
       with:
         name: bonita-studio-${{matrix.os.short}}-build-${{github.sha}}
         path: bonita-studio/all-in-one/target/*.zip
+    - name: Send a message to Slack channel
+      if: ${{ failure()}}
+      uses: slackapi/slack-github-action@v1.17.0
+      with:
+        channel-id: ${{ secrets.CHANNEL_ID}}
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": ":bomb: :fire:  Community build failed. \n \n  @channel *We need someone* ! \n  - Add a :fire_extinguisher:if you take the action to check what's happening  (only one person is required) \n - Add a :sweat_drops: when it’s done (and eventually a :party_parrot: )"
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "More details about the error <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}?check_suite_focus=true| here>"
+                }
+              },
+              {
+                "type": "divider"
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "_La vie est un mystère qu'il faut vivre et non un problème à résoudre._\n _Gandhi_"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
