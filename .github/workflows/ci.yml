@@ -27,7 +27,7 @@ jobs:
         os:
           - {name: macos-10.15, short: "macos" }
           - {name: windows-2019, short: "windows" }
-          - {name: unbuntu-20.04, short: "ubuntu" }
+          - {name: ubuntu-20.04, short: "ubuntu" }
     steps:
     - name: Checkout
       uses: actions/checkout@v1
