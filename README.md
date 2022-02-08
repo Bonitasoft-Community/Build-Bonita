@@ -1,8 +1,6 @@
 # Build Bonita from sources
 
-[![Linux build](https://img.shields.io/travis/Bonitasoft-Community/Build-Bonita/master?label=Linux%20build&logo=travis)](https://travis-ci.org/Bonitasoft-Community/Build-Bonita)
-
-[![MacOS and Windows build](https://github.com/Bonitasoft-Community/Build-Bonita/workflows/MacOS%20and%20Windows%20Build/badge.svg)](https://github.com/Bonitasoft-Community/Build-Bonita/actions)
+[![Build](https://github.com/Bonitasoft-Community/Build-Bonita/workflows/Build/badge.svg)](https://github.com/Bonitasoft-Community/Build-Bonita/actions)
 
 
 ## Overview

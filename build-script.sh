@@ -223,19 +223,6 @@ logBuildInfo() {
 
 checkPrerequisites() {
     echo "Prerequisites"
-    if [[ "${OS_IS_LINUX}" == "true" ]]; then
-        if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
-            # Test that x server is running. Required to generate Bonita Studio models
-            # Can be ignored if Studio is build without the "generate" Maven profile
-
-            if ! xset q &>/dev/null; then
-                echo "No X server at \$DISPLAY [$DISPLAY]" >&2
-                exit 1
-            fi
-            echo "  > X server running correctly"
-        fi
-    fi
-
     # Test if Curl exists
     if hash curl 2>/dev/null; then
         CURL_VERSION="$(curl --version 2>&1  | awk -F " " 'NR==1 {print $2}')"
