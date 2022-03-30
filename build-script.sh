@@ -18,8 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=7.14.0.beta-01
-
+BONITA_VERSION=7.14.0
 
 ########################################################################################################################
 # SCM AND BUILD FUNCTIONS
