@@ -46,14 +46,6 @@ checkout() {
 
     repository_name="$1"
 
-    if [ "$#" -ge 2 ]; then
-        tag_name="$2"
-    else
-        # If we don't have a tag name assume that the tag is named with the Bonita version
-		tag_name=$BONITA_VERSION
-    fi
-	echoHeaders "Processing ${repository_name} ${tag_name}"
-
     if [ "$#" -eq 3 ]; then
         checkout_folder_name="$3"
     else
@@ -63,10 +55,42 @@ checkout() {
 
     # If we don't already clone the repository do it
     if [ ! -d "$checkout_folder_name/.git" ]; then
+      echoHeaders "Cloning ${repository_name}"
       git clone --depth 1 "https://github.com/bonitasoft/$repository_name.git" $checkout_folder_name
     fi
+
+
     # Ensure we fetch all the tags and that we are on the appropriate one
     git -C $checkout_folder_name fetch --tags
+
+    if [ "$#" -ge 2 ]; then
+        tag_name="$2"
+    else
+        # If we don't have a tag name assume that the tag is named with the Bonita version
+		tag_name=$BONITA_VERSION
+    fi
+
+    set +e
+
+    git -C $checkout_folder_name show-ref --quiet --verify refs/tags/$tag_name
+
+    if [ $? -eq 0 ]; then
+        echo "Found a matching tag ref for $tag_name"
+        tag_name="tags/$tag_name"
+    else
+        git -C $checkout_folder_name show-ref -q --verify refs/heads/$tag_name
+        if [ $? -eq 0 ]; then 
+            echo "Found a matching branch ref for $tag_name"
+        else
+            echo "$tag_name is neither a known tag or branch in $repository_name"
+            exit 1
+        fi
+    fi
+
+    set -e
+
+	echoHeaders "Switching ${repository_name} to ${tag_name}"
+
     git -C $checkout_folder_name reset --hard $tag_name
 
     # Move to the repository clone folder (required to run Maven/Gradle wrapper)
@@ -292,7 +316,7 @@ checkJavaVersion() {
 
 detectWebPagesDependenciesVersions() {
     echoHeaders "Detecting web-pages dependencies versions"
-    local webPagesGradleBuild=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-web-pages/${BONITA_VERSION}/build.gradle`
+    local webPagesGradleBuild=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-web-pages/${BONITA_VERSION}/common.gradle`
 
     WEB_PAGES_UID_VERSION=`echo "${webPagesGradleBuild}" | tr -s "[:blank:]" | tr -d "\n" | sed 's@.*UIDesigner {\(.*\)"}.*@\1@g' | sed 's@.*version "\(.*\)@\1@g'`
     echo "WEB_PAGES_UID_VERSION: ${WEB_PAGES_UID_VERSION}"
@@ -350,12 +374,12 @@ echo
 
 
 if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
-    build_gradle_wrapper_test_skip_publishToMavenLocal bonita-engine
+    #build_gradle_wrapper_test_skip_publishToMavenLocal bonita-engine
 
-    build_maven_wrapper_install_skiptest bonita-web-extensions
+    #build_maven_wrapper_install_skiptest bonita-web-extensions
 
-    build_maven_wrapper_install_skiptest bonita-web
-    build_maven_wrapper_install_skiptest bonita-portal-js
+    #build_maven_wrapper_install_skiptest bonita-web
+    #build_maven_wrapper_install_skiptest bonita-portal-js
 
     # bonita-web-pages uses a dedicated UID version
     detectWebPagesDependenciesVersions
