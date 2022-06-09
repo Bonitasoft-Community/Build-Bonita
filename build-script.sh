@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=7.14.0
+BONITA_VERSION=dev
 
 ########################################################################################################################
 # SCM AND BUILD FUNCTIONS
@@ -67,14 +67,14 @@ checkout() {
     fi
     # Ensure we fetch all the tags and that we are on the appropriate one
     git -C $checkout_folder_name fetch --tags
-    git -C $checkout_folder_name reset --hard tags/$tag_name
+    git -C $checkout_folder_name reset --hard $tag_name
 
     # Move to the repository clone folder (required to run Maven/Gradle wrapper)
     cd $checkout_folder_name
 }
 
 run_maven_with_standard_system_properties() {
-	build_command="$build_command -Dengine.version=$BONITA_VERSION"
+	#build_command="$build_command -Dengine.version=$BONITA_VERSION"
     echo "[DEBUG] Running build command: $build_command"
     eval "$build_command"
     # Go back to script folder (checkout move current directory to project checkout folder.
