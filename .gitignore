@@ -22,6 +22,11 @@ bonita-web-extensions
 bonita-web-pages
 bonita-web
 image-overlay-plugin
+bonita-admin-application
+bonita-super-admin-application
+bonita-user-application
+bonita-data-repository
+bonita-application-directory
 
 # IDE
 .idea/

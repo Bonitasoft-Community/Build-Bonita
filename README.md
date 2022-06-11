@@ -117,19 +117,10 @@ Notice that most of the actions described below can be done directly using the G
 See [GitHub help](https://help.github.com/en/github/managing-files-in-a-repository/editing-files-in-your-repository) for
 more details
 
-### Bonita maintenance version
-
-- from GitHub interface, edit `build-script.sh`on `master` branch (you can follow [GitHub help](https://help.github.com/en/github/managing-files-in-a-repository/editing-files-in-your-repository))
-- update the `build-script.sh` file and update the `BONITA_VERSION` variable
-- propose file changes by creating a new branch, for instance `maintenance_7.10.2`
-- [create a Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) targeting `master`
-- wait for build to pass, this should work without any other modifications
-- [merge the Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) after successful build
-
 ### Bonita development version
 
 - create a new branch starting from the `dev` branch, for instance `dev_7.11.0.W10`
-- update the `build-script.sh` file and update the `BONITA_VERSION` variable
+- update the `build-script.sh` file and update the `BRANCH_OR_TAG` variable
 - [create a Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) targeting the `dev` branch
 - wait for build to run
 - failures often happen because of new components to be added or removed, build options of some components to be updated
@@ -162,12 +153,5 @@ Release are cut when
 
 ### Create a GitHub release
 
-A new release can be create by following the [GitHub help](https://help.github.com/en/github/administering-a-repository/managing-releases-in-a-repository#creating-a-release)
-- for `Tag version`, use a value that follows the [Tag Scheme](#tag-scheme). The tag will be created when the release
-will be published
-- for `Target`
-  - usually, keep the `master` branch except if new commits that you don't want to integrate for the release are already
-  available in the branch
-  - in that case, choose a dedicated commit 
-  - **important**: ensure that the build to pass on the chosen branch or commit used to create the release
+A new release can be create using the [Create release action](https://github.com/Bonitasoft-Community/Build-Bonita/actions/workflows/release.yml)
 

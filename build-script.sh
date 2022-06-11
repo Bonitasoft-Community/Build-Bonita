@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BONITA_VERSION=dev
+BRANCH_OR_TAG=dev
 
 ########################################################################################################################
 # SCM AND BUILD FUNCTIONS
@@ -67,7 +67,7 @@ checkout() {
         tag_name="$2"
     else
         # If we don't have a tag name assume that the tag is named with the Bonita version
-		tag_name=$BONITA_VERSION
+		tag_name=$BRANCH_OR_TAG
     fi
 
     set +e
@@ -98,7 +98,6 @@ checkout() {
 }
 
 run_maven_with_standard_system_properties() {
-	#build_command="$build_command -Dengine.version=$BONITA_VERSION"
     echo "[DEBUG] Running build command: $build_command"
     eval "$build_command"
     # Go back to script folder (checkout move current directory to project checkout folder.
@@ -242,7 +241,7 @@ logBuildInfo() {
     echo "  > Commit: $(git rev-parse FETCH_HEAD)"
 
     echo "Build settings"
-    echo "  > BONITA_VERSION: ${BONITA_VERSION}"
+    echo "  > BRANCH_OR_TAG: ${BRANCH_OR_TAG}"
     echo "  > BONITA_BUILD_NO_CLEAN: ${BONITA_BUILD_NO_CLEAN}"
     echo "  > BONITA_BUILD_QUIET: ${BONITA_BUILD_QUIET}"
     echo "  > BONITA_BUILD_STUDIO_ONLY: ${BONITA_BUILD_STUDIO_ONLY}"
@@ -316,7 +315,7 @@ checkJavaVersion() {
 
 detectWebPagesDependenciesVersions() {
     echoHeaders "Detecting web-pages dependencies versions"
-    local webPagesGradleBuild=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-web-pages/${BONITA_VERSION}/common.gradle`
+    local webPagesGradleBuild=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-web-pages/${BRANCH_OR_TAG}/common.gradle`
 
     WEB_PAGES_UID_VERSION=`echo "${webPagesGradleBuild}" | tr -s "[:blank:]" | tr -d "\n" | sed 's@.*UIDesigner {\(.*\)"}.*@\1@g' | sed 's@.*version "\(.*\)@\1@g'`
     echo "WEB_PAGES_UID_VERSION: ${WEB_PAGES_UID_VERSION}"
@@ -324,7 +323,7 @@ detectWebPagesDependenciesVersions() {
 
 detectStudioDependenciesVersions() {
     echoHeaders "Detecting Studio dependencies versions"
-    local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BONITA_VERSION}/pom.xml`
+    local studioPom=`curl -sS -X GET https://raw.githubusercontent.com/bonitasoft/bonita-studio/${BRANCH_OR_TAG}/pom.xml`
 
     STUDIO_UID_VERSION=`echo "${studioPom}" | grep \<ui.designer.version\> | sed 's@.*>\(.*\)<.*@\1@g'`
     echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"

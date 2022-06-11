@@ -1,6 +1,8 @@
 name: Build
 
 on:
+  schedule:
+    - cron: '0 3 * * *'
   push:
     branches:
     - master
@@ -30,11 +32,13 @@ jobs:
           - {name: ubuntu-20.04, short: "ubuntu" }
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
+      
     - name: Setup JDK
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v3
       with:
         java-version: 11
+        distribution: 'temurin'
     - name: Setup Maven configuration
       shell: bash
       run: |
@@ -48,7 +52,7 @@ jobs:
         BONITA_BUILD_STUDIO_SKIP: true
     - name: Upload Bonita bundle
       # see https://help.github.com/en/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts and https://github.com/actions/upload-artifact
-      uses: actions/upload-artifact@v2.2.0
+      uses: actions/upload-artifact@v3
       with:
         # see https://github.community/t5/GitHub-Actions/Use-variables-in-upload-artifact/m-p/34778#M2009
         name: bonita-bundle-${{matrix.os.short}}-build-${{github.sha}}
@@ -61,43 +65,19 @@ jobs:
         BONITA_BUILD_STUDIO_ONLY: true
     - name: Upload Bonita Studio
       # see https://github.com/actions/upload-artifact
-      uses: actions/upload-artifact@v2.2.0
+      uses: actions/upload-artifact@v3
       with:
         name: bonita-studio-${{matrix.os.short}}-build-${{github.sha}}
         path: bonita-studio/all-in-one/target/*.zip
-    - name: Send a message to Slack channel
-      if: ${{ failure()}}
-      uses: slackapi/slack-github-action@v1.17.0
-      with:
-        channel-id: ${{ secrets.CHANNEL_ID}}
-        payload: |
-          {
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": ":bomb: :fire:  Community build failed. \n \n  @channel *We need someone* ! \n  - Add a :fire_extinguisher:if you take the action to check what's happening  (only one person is required) \n - Add a :sweat_drops: when it’s done (and eventually a :party_parrot: )"
-                }
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "More details about the error <https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}?check_suite_focus=true| here>"
-                }
-              },
-              {
-                "type": "divider"
-              },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "_La vie est un mystère qu'il faut vivre et non un problème à résoudre._\n _Gandhi_"
-                }
-              }
-            ]
-          }
-      env:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    
+    - name: Send failure message to Slack channel
+        if: failure()        
+        uses: bonitasoft/actions/packages/notify-slack@main
+        with:
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          MESSAGE: |
+            :bomb: :fire:  Community build failed.
+            
+            - Add a :fire_extinguisher:if you take the action to resolve the conflicts (only one person is required)
+            - Add a :sweat_drops: when it’s done (and eventually a :party_parrot: )"
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
