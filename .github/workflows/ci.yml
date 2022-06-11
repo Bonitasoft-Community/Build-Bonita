@@ -71,7 +71,7 @@ jobs:
         path: bonita-studio/all-in-one/target/*.zip
     
     - name: Send failure message to Slack channel
-      if: ${{  github.event.number != 0 && failure() }}        
+      if: ${{  github.event.number == 0 && failure() }}        
       uses: bonitasoft/actions/packages/notify-slack@main
       with:
         CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
