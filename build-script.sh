@@ -112,7 +112,7 @@ run_gradle_with_standard_system_properties() {
 }
 
 build_maven_wrapper() {
-    build_command="./mvnw"
+    build_command="./mvnw -ntp"
 }
 
 build_gradle_wrapper() {
@@ -373,12 +373,12 @@ echo
 
 
 if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
-    #build_gradle_wrapper_test_skip_publishToMavenLocal bonita-engine
+    build_gradle_wrapper_test_skip_publishToMavenLocal bonita-engine
 
-    #build_maven_wrapper_install_skiptest bonita-web-extensions
+    build_maven_wrapper_install_skiptest bonita-web-extensions
 
-    #build_maven_wrapper_install_skiptest bonita-web
-    #build_maven_wrapper_install_skiptest bonita-portal-js
+    build_maven_wrapper_install_skiptest bonita-web
+    build_maven_wrapper_install_skiptest bonita-portal-js
 
     # bonita-web-pages uses a dedicated UID version
     detectWebPagesDependenciesVersions
