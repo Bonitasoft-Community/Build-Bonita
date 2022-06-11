@@ -71,12 +71,12 @@ jobs:
         path: bonita-studio/all-in-one/target/*.zip
     
     - name: Send failure message to Slack channel
-      if: failure()        
+      if: ${{  github.event.number != 0 && failure() }}        
       uses: bonitasoft/actions/packages/notify-slack@main
       with:
         CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
         MESSAGE: |
-          :bomb: :fire:  Community build failed.
+          :bomb: :fire:  Community build failed for ${{matrix.os.short}}.
           
           - Add a :fire_extinguisher:if you take the action to resolve the conflicts (only one person is required)
           - Add a :sweat_drops: when it’s done (and eventually a :party_parrot: )"
