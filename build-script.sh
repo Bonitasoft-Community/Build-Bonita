@@ -402,7 +402,7 @@ if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
     detectStudioDependenciesVersions
     build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
     
-    build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests,local-repository
+    build_maven_wrapper_install_skiptest bonita-studio
 else
     echoHeaders "Skipping the Studio build"
 fi
