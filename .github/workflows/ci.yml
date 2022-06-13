@@ -33,17 +33,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      
     - name: Setup JDK
       uses: actions/setup-java@v3
       with:
         java-version: 11
         distribution: 'temurin'
-    - name: Setup Maven configuration
-      shell: bash
-      run: |
-        mkdir -p $HOME/.m2/
-        cp $GITHUB_WORKSPACE/.github/workflows/maven/settings.xml $HOME/.m2/
     - name: Build Bonita Runtime Bundle
       shell: bash
       run: ./build-script.sh
@@ -69,7 +63,6 @@ jobs:
       with:
         name: bonita-studio-${{matrix.os.short}}-build-${{github.sha}}
         path: bonita-studio/all-in-one/target/*.zip
-    
     - name: Send failure message to Slack channel
       if: ${{ github.event_name != 'pull_request' && failure() }}        
       uses: bonitasoft/actions/packages/notify-slack@main
