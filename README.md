@@ -57,6 +57,20 @@ If you face any issue with this build script or for any question, please report 
 
 You can also ask for help on [Bonita Community forum](https://community.bonitasoft.com/questions-and-answers).
 
+## Github Action
+
+### Build action
+
+The build action is triggered on Pull requests and `master` branch pushes.  
+It runs the `build-script.sh` on the 3 supported OS:
+
+* Ubuntu
+* Windows
+* MacOs
+
+### Artifact retention
+
+Built binaries are uploaded as action _Artifacts_ and kept **90 days**.
 
 ## <a name="branches-and-tags"></a> Branches and Tags
 
@@ -64,9 +78,8 @@ The use of `Build-Bonita` branch or tag depends of the Bonita version you want t
 
 | Bonita version | Build-Bonita branch or tag |
 | -------- | ----- |
-| latest maintenance version | `master` branch |
-| old version | related tag (see the [tags](#tags) section below) |
-| next Bonita GA version | `dev` branch |
+| Next Bonita GA version | `master` branch |
+| Old versions | related tag (see the [tags](#tags) section below) |
 
 **Notes**
 - `Build-Bonita` currently does not provide support for building Bonita SNAPSHOT versions aka next maintenance or
@@ -76,14 +89,12 @@ development versions. See [#41](https://github.com/Bonitasoft-Community/Build-Bo
 ### Branches
 
 `Build-Bonita` uses the same branch names as the Bonita repositories
-- `master` for latest available GA or maintenance version. It also contains latest build improvements related to the
-solution provided by `Build-Bonita`
-- `dev` for next Bonita version while developments are in progress
+- `master` branch build the current development version aka `dev` branch.
 
 
 ### Tags
 
-Tags are only available to build Bonita GA (i.e. 7.9.0, 7.10.0, ....) or maintenance (i.e. 7.7.5, 7.9.4, ....) versions,
+Tags are only available to build Bonita GA (i.e. 7.9.0, 7.10.0, ....) versions,
 not for development versions.
 
 ### <a name="tag-scheme"></a> Tag scheme
@@ -117,38 +128,11 @@ Notice that most of the actions described below can be done directly using the G
 See [GitHub help](https://help.github.com/en/github/managing-files-in-a-repository/editing-files-in-your-repository) for
 more details
 
-### Bonita development version
-
-- create a new branch starting from the `dev` branch, for instance `dev_7.11.0.W10`
-- update the `build-script.sh` file and update the `BRANCH_OR_TAG` variable
-- [create a Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) targeting the `dev` branch
-- wait for build to run
-- failures often happen because of new components to be added or removed, build options of some components to be updated
-  - try to fix, then commit and iterate until build pass
-  - see [#32](https://github.com/Bonitasoft-Community/Build-Bonita/pull/32) or
-  [#48](https://github.com/Bonitasoft-Community/Build-Bonita/pull/48) for instance
-- [merge the Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) after successful build
-
-
-### Merging master and dev branches
-
-Follow the same lifecycle as Bonita component repositories. Merge are currently done manually by `Build-Bonita`
-contributors
-- `master` --> `dev`: all the time, especially after adding support for a new maintenance version. Allow to get new
-improvements applied to maintenance versions, avoid subsequent merge conflicts, ...
-- `dev` --> `master`: on GA release, `master` is going to become the maintenance branch for the new Bonita released
-version. It is highly advised to do the merge in a dedicated branch as some issue occurred at that stage in the past
-  - first, ensure that `master` has been merged into`dev`
-  - create a new `bonita_7.10.0_GA` branch starting from `master` branch
-  - merge `dev` into `bonita_7.10.0_GA`
-  - [create a Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) from `bonita_7.10.0_GA` targeting the `master` branch
-  - [merge the Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request) into `master` when the build passed (eventually after fixing any issues related to the merge)
-
 
 ## New Release
 
 Release are cut when
-- a new Bonita version (GA or maintenance) is supported by `Build-Bonita`
+- a new Bonita GA version is supported by `Build-Bonita`
 - significant improvements have been made in the `Build-Bonita` build script for the latest supported Bonita version
 
 ### Create a GitHub release
