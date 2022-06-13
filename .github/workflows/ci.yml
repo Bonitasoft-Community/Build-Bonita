@@ -44,13 +44,13 @@ jobs:
       run: |
         mkdir -p $HOME/.m2/
         cp $GITHUB_WORKSPACE/.github/workflows/maven/settings.xml $HOME/.m2/
-    - name: Build without Studio
+    - name: Build Bonita Runtime Bundle
       shell: bash
       run: ./build-script.sh
       env:
         BONITA_BUILD_QUIET: false
         BONITA_BUILD_STUDIO_SKIP: true
-    - name: Upload Bonita bundle
+    - name: Upload Bonita Runtime Bundle
       # see https://help.github.com/en/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts and https://github.com/actions/upload-artifact
       uses: actions/upload-artifact@v3
       with:
@@ -71,7 +71,7 @@ jobs:
         path: bonita-studio/all-in-one/target/*.zip
     
     - name: Send failure message to Slack channel
-      if: ${{  github.event.number == 0 && failure() }}        
+      if: ${{ github.event_name != 'pull_request' && failure() }}        
       uses: bonitasoft/actions/packages/notify-slack@main
       with:
         CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
