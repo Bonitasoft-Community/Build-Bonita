@@ -150,6 +150,10 @@ verify() {
     build_command="$build_command verify"
 }
 
+module_only() {
+    build_command="$build_command -pl :$1 -am"
+}
+
 skiptest() {
     build_command="$build_command -DskipTests"
 }
@@ -191,6 +195,21 @@ build_maven_wrapper_install_skiptest()
     build_quiet_if_requested
     clean
     install
+    skiptest
+    run_maven_with_standard_system_properties
+}
+
+# params:
+# - Git repository name
+# - Module name
+build_maven_wrapper_install_skiptest_with_module()
+{
+    checkout $1
+    build_maven_wrapper
+    build_quiet_if_requested
+    clean
+    install
+    module_only $2
     skiptest
     run_maven_with_standard_system_properties
 }
@@ -387,7 +406,7 @@ if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
 
     build_maven_wrapper_install_skiptest bonita-application-directory
     build_maven_wrapper_install_skiptest bonita-user-application
-    build_maven_wrapper_install_skiptest bonita-admin-application
+    build_maven_wrapper_install_skiptest_with_module bonita-admin-application bonita-admin-application
     build_maven_wrapper_install_skiptest bonita-super-admin-application
 
     build_maven_wrapper_install_skiptest bonita-distrib
