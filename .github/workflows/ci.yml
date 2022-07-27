@@ -25,7 +25,7 @@ jobs:
       matrix:
         # syntax inspired from https://github.community/t5/GitHub-Actions/Using-a-matrix-defined-input-for-a-custom-action/m-p/32032/highlight/true#M988
         os:
-          - {name: macos-10.15, short: "macos" }
+          - {name: macos-12, short: "macos" }
           - {name: windows-2019, short: "windows" }
           - {name: ubuntu-20.04, short: "ubuntu" }
     steps:
