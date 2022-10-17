@@ -15,6 +15,7 @@ BONITA_BUILD_NO_CLEAN=${BONITA_BUILD_NO_CLEAN:-false}
 BONITA_BUILD_QUIET=${BONITA_BUILD_QUIET:-false}
 BONITA_BUILD_STUDIO_ONLY=${BONITA_BUILD_STUDIO_ONLY:-false}
 BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
+BONITA_BUILD_DEBUG=${BONITA_BUILD_DEBUG:-false}
 
 # Bonita version
 
@@ -113,10 +114,18 @@ run_gradle_with_standard_system_properties() {
 
 build_maven_wrapper() {
     build_command="./mvnw -ntp"
+      if [[ "${BONITA_BUILD_DEBUG}" == "true" ]]; then
+        echo "Enable debug build"
+        build_command="$build_command -X"
+    fi
 }
 
 build_gradle_wrapper() {
     build_command="./gradlew"
+    if [[ "${BONITA_BUILD_DEBUG}" == "true" ]]; then
+        echo "Enable debug build"
+        build_command="$build_command --debug"
+    fi
 }
 
 build_quiet_if_requested() {
