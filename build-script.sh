@@ -105,7 +105,7 @@ build_maven_wrapper() {
 }
 
 build_gradle_wrapper() {
-    build_command="./gradlew"
+    build_command="./gradlew --debug"
     if [[ "${BONITA_BUILD_DEBUG}" == "true" ]]; then
         echo "Enable debug build"
         build_command="$build_command --debug"
