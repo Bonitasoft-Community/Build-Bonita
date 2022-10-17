@@ -68,31 +68,15 @@ checkout() {
         tag_name="$2"
     else
         # If we don't have a tag name assume that the tag is named with the Bonita version
-		tag_name=$BRANCH_OR_TAG
+	tag_name=$BRANCH_OR_TAG
     fi
 
-    set +e
-
-    git -C $checkout_folder_name show-ref --quiet --verify refs/tags/$tag_name
-
-    if [ $? -eq 0 ]; then
-        echo "Found a matching tag ref for $tag_name"
-        tag_name="tags/$tag_name"
-    else
-        git -C $checkout_folder_name show-ref -q --verify refs/heads/$tag_name
-        if [ $? -eq 0 ]; then 
-            echo "Found a matching branch ref for $tag_name"
-        else
-            echo "$tag_name is neither a known tag or branch in $repository_name"
-            exit 1
-        fi
-    fi
 
     set -e
 
-	echoHeaders "Switching ${repository_name} to ${tag_name}"
+    echoHeaders "Switching ${repository_name} to ${tag_name}"
 
-    git -C $checkout_folder_name reset --hard $tag_name
+    git -C $checkout_folder_name checkout --hard origin/$tag_name
 
     # Move to the repository clone folder (required to run Maven/Gradle wrapper)
     cd $checkout_folder_name
@@ -393,7 +377,7 @@ echo
 # ngUpload: automatically downloaded in the build of bonita-ui-designer project.
 # preact-chartjs-2: required for Bonita Subscription Intelligent Continuous Improvement module.
 # preact-content-loader: required for Bonita Subscription Intelligent Continuous Improvement module.
-# restlet-framework-java: /!\
+# restlet-framework-java: /!\ 
 # swt-repo: legacy repository required by Bonita Studio. Deprecated.
 # training-presentation-tool: fork of reveal.js with custom look and feel.
 # widget-builder: automatically downloaded in the build of bonita-ui-designer project.
