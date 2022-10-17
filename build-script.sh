@@ -361,7 +361,7 @@ echo
 # List of repositories on https://github.com/bonitasoft that you don't need to build
 # Note that archived repositories are not listed here, as they are only required to build old Bonita versions
 #
-# angular-strap: automatically downloaded in the build of bonita-web project.
+# angular-strap: automatically downloaded in the build of bonita-ui-designer project.
 # babel-preset-bonita: automatically downloaded in the build of bonita-ui-designer project.
 # bonita-codesign-windows: use to sign Windows binaries when building using Bonita Continuous Integration.
 # bonita-connector-talend: deprecated.
@@ -394,7 +394,6 @@ echo
 if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
     build_gradle_wrapper_test_skip_publishToMavenLocal bonita-engine
 
-    build_maven_wrapper_install_skiptest bonita-web
     build_maven_wrapper_install_skiptest bonita-portal-js
 
     # bonita-web-pages uses a dedicated UID version
