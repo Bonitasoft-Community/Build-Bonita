@@ -43,7 +43,6 @@ jobs:
       env:
         BONITA_BUILD_QUIET: false
         BONITA_BUILD_STUDIO_SKIP: true
-        BONITA_BUILD_DEBUG: true
     - name: Upload Bonita Runtime Bundle
       # see https://help.github.com/en/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts and https://github.com/actions/upload-artifact
       uses: actions/upload-artifact@v3
