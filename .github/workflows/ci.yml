@@ -50,18 +50,6 @@ jobs:
         # see https://github.community/t5/GitHub-Actions/Use-variables-in-upload-artifact/m-p/34778#M2009
         name: bonita-bundle-${{matrix.os.short}}-build-${{github.sha}}
         path: bonita-distrib/tomcat/target/*.zip
-    - name: Build Studio
-      shell: bash
-      run: ./build-script.sh
-      env:
-        BONITA_BUILD_QUIET: false
-        BONITA_BUILD_STUDIO_ONLY: true
-    - name: Upload Bonita Studio
-      # see https://github.com/actions/upload-artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: bonita-studio-${{matrix.os.short}}-build-${{github.sha}}
-        path: bonita-studio/all-in-one/target/*.zip
     - name: Send failure message to Slack channel
       if: ${{ github.event_name != 'pull_request' && failure() }}        
       uses: bonitasoft/actions/packages/notify-slack@main
