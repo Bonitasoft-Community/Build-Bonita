@@ -400,35 +400,6 @@ echo
 # bonita-studio-watchdog: obsolete since 7.10 (included in bonita-studio).
 
 
-if [[ "${BONITA_BUILD_STUDIO_ONLY}" == "false" ]]; then
-    build_gradle_wrapper_test_skip_publishToMavenLocal bonita-engine
 
-    build_maven_wrapper_install_skiptest bonita-web
-    build_maven_wrapper_install_skiptest bonita-portal-js
-
-    # bonita-web-pages uses a dedicated UID version
-    detectWebPagesDependenciesVersions
-    build_maven_wrapper_install_skiptest bonita-ui-designer ${WEB_PAGES_UID_VERSION}
-    build_gradle_wrapper_test_skip_publishToMavenLocal bonita-web-pages
-
-    build_maven_wrapper_install_skiptest bonita-application-directory
-    build_maven_wrapper_install_skiptest bonita-user-application
-    build_maven_wrapper_install_skiptest_with_module bonita-admin-application bonita-admin-application
-    build_maven_wrapper_install_skiptest bonita-super-admin-application
-
-    build_maven_wrapper_install_skiptest bonita-distrib
-else
-    echoHeaders "Skipping all build prior the Studio part"
-fi
-
-if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
-    build_maven_wrapper_install_skiptest bonita-data-repository
-    
-    # bonita-studio uses a dedicated UID version
-    detectStudioDependenciesVersions
-    build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
-    
-    build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests
-else
-    echoHeaders "Skipping the Studio build"
-fi
+build_maven_wrapper_install_skiptest bonita-ui-designer fix/add_log_for_debug
+build_gradle_wrapper_test_skip_publishToMavenLocal bonita-web-pages fix/add_log_for_debug
