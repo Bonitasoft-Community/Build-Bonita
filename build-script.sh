@@ -76,7 +76,7 @@ checkout() {
 
     echoHeaders "Switching ${repository_name} to ${tag_name}"
 
-    git -C $checkout_folder_name checkout --hard origin/$tag_name
+    git -C $checkout_folder_name checkout origin/$tag_name
 
     # Move to the repository clone folder (required to run Maven/Gradle wrapper)
     cd $checkout_folder_name
