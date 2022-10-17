@@ -57,7 +57,7 @@ checkout() {
     # If we don't already clone the repository do it
     if [ ! -d "$checkout_folder_name/.git" ]; then
       echoHeaders "Cloning ${repository_name}"
-      git clone --depth 1 "https://github.com/bonitasoft/$repository_name.git" $checkout_folder_name
+      git clone "https://github.com/bonitasoft/$repository_name.git" $checkout_folder_name
     fi
 
 
