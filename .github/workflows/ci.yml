@@ -74,7 +74,7 @@ jobs:
         with:
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           MESSAGE: |
-            :bomb: :fire:  Community build failed for ${{matrix.os.short}}.
+            :bomb: :fire:  Community build failed
           
             - Add a :fire_extinguisher:if you take the action to resolve the conflicts (only one person is required)
             - Add a :sweat_drops: when it’s done (and eventually a :party_parrot: )"
