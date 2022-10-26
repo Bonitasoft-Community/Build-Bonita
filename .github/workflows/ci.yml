@@ -61,15 +61,21 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: bonita-studio-${{matrix.os.short}}-build-${{github.sha}}
-        path: bonita-studio/all-in-one/target/*.zip
-    - name: Send failure message to Slack channel
-      if: ${{ github.event_name != 'pull_request' && failure() }}        
-      uses: bonitasoft/actions/packages/notify-slack@main
-      with:
-        CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
-        MESSAGE: |
-          :bomb: :fire:  Community build failed for ${{matrix.os.short}}.
+        path: bonita-studio/all-in-one/target/*.zip    
+  slack:
+    name: Notify Slack Failure
+    needs: build
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v3
+      - name: Send failure message to Slack channel
+        if: ${{ github.event_name != 'pull_request' && env.WORKFLOW_CONCLUSION == 'failure'}}
+        uses: bonitasoft/actions/packages/notify-slack@main        
+        with:
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          MESSAGE: |
+            :bomb: :fire:  Community build failed for ${{matrix.os.short}}.
           
-          - Add a :fire_extinguisher:if you take the action to resolve the conflicts (only one person is required)
-          - Add a :sweat_drops: when it’s done (and eventually a :party_parrot: )"
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+            - Add a :fire_extinguisher:if you take the action to resolve the conflicts (only one person is required)
+            - Add a :sweat_drops: when it’s done (and eventually a :party_parrot: )"
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
