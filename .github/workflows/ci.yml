@@ -31,7 +31,7 @@ jobs:
           - {name: ubuntu-20.04, short: "ubuntu" }
     steps:
     - name: Clean workspace
-      uses: asilbek99/action-cleanup@v1
+      uses: asilbek99/action-cleanup@v1.0
     - name: Checkout
       uses: actions/checkout@v4
     - name: Setup JDK
