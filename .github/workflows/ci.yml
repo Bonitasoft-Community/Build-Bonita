@@ -30,6 +30,8 @@ jobs:
           - {name: windows-2019, short: "windows" }
           - {name: ubuntu-20.04, short: "ubuntu" }
     steps:
+    - name: Clean workspace
+      uses: asilbek99/action-cleanup@v1
     - name: Checkout
       uses: actions/checkout@v4
     - name: Setup JDK
