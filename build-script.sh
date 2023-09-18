@@ -77,21 +77,21 @@ checkout() {
     if [ $? -eq 0 ]; then
         echo "Found a matching tag ref for $tag_name"
         tag_name="tags/$tag_name"
+        echoHeaders "Switching ${repository_name} to ${tag_name}"
+        set -e
+        git -C $checkout_folder_name reset --hard $tag_name
     else
         git -C $checkout_folder_name show-ref -q --verify refs/heads/$tag_name
         if [ $? -eq 0 ]; then 
             echo "Found a matching branch ref for $tag_name"
+            echoHeaders "Switching ${repository_name} to ${tag_name}"
+            set -e
+            git -C $checkout_folder_name reset --hard origin/$tag_name
         else
             echo "$tag_name is neither a known tag or branch in $repository_name"
             exit 1
         fi
     fi
-
-    set -e
-
-	echoHeaders "Switching ${repository_name} to ${tag_name}"
-
-    git -C $checkout_folder_name reset --hard $tag_name
 
     # Move to the repository clone folder (required to run Maven/Gradle wrapper)
     cd $checkout_folder_name
