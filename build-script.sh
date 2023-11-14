@@ -18,7 +18,7 @@ BONITA_BUILD_STUDIO_SKIP=${BONITA_BUILD_STUDIO_SKIP:-false}
 
 # Bonita version
 
-BRANCH_OR_TAG=9.0.0
+BRANCH_OR_TAG=dev
 
 ########################################################################################################################
 # SCM AND BUILD FUNCTIONS
