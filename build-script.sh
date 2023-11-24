@@ -311,7 +311,7 @@ checkJavaVersion() {
     fi
 
     java_version_1st_digit=$(echo "$java_full_version" | sed 's/\(.*\)\..*\..*$/\1/g')
-    java_version_expected=11
+    java_version_expected=17
     # pre Java 9 versions, get minor version
     if [[ "$java_version_1st_digit" -eq "1" ]]; then
       java_version=$(echo "$java_full_version" | sed 's/.*\.\(.*\)\..*$/\1/g')
@@ -418,7 +418,7 @@ if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
     detectStudioDependenciesVersions
     build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
     
-    build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one,!jdk11-tests
+    build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one
 else
     echoHeaders "Skipping the Studio build"
 fi
