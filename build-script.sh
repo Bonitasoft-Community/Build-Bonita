@@ -346,6 +346,9 @@ detectStudioDependenciesVersions() {
 
     STUDIO_UID_VERSION=`echo "${studioPom}" | grep \<ui.designer.version\> | sed 's@.*>\(.*\)<.*@\1@g'`
     echo "STUDIO_UID_VERSION: ${STUDIO_UID_VERSION}"
+
+    DATA_REPOSITORY_VERSION=`echo "${studioPom}" | grep \<business.data.repository.version\> | sed 's@.*>\(.*\)<.*@\1@g'`
+    echo "DATA_REPOSITORY_VERSION: ${DATA_REPOSITORY_VERSION}"
 }
 
 
@@ -412,10 +415,9 @@ else
 fi
 
 if [[ "${BONITA_BUILD_STUDIO_SKIP}" == "false" ]]; then
-    build_maven_wrapper_install_skiptest bonita-data-repository
-    
     # bonita-studio uses a dedicated UID version
     detectStudioDependenciesVersions
+    build_maven_wrapper_install_skiptest bonita-data-repository ${DATA_REPOSITORY_VERSION}
     build_maven_wrapper_install_skiptest bonita-ui-designer ${STUDIO_UID_VERSION}
     
     build_maven_wrapper_verify_skiptest_with_profile bonita-studio default,all-in-one
