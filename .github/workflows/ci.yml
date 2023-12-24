@@ -45,7 +45,7 @@ jobs:
         BONITA_BUILD_STUDIO_SKIP: true
     - name: Upload Bonita Runtime Bundle
       # see https://help.github.com/en/github/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts and https://github.com/actions/upload-artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         # see https://github.community/t5/GitHub-Actions/Use-variables-in-upload-artifact/m-p/34778#M2009
         name: bonita-bundle-${{matrix.os.short}}-build-${{github.sha}}
@@ -58,7 +58,7 @@ jobs:
         BONITA_BUILD_STUDIO_ONLY: true
     - name: Upload Bonita Studio
       # see https://github.com/actions/upload-artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bonita-studio-${{matrix.os.short}}-build-${{github.sha}}
         path: bonita-studio/all-in-one/target/*.zip    
